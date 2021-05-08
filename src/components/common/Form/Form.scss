@@ -1,0 +1,36 @@
+@mixin centreIt($flexDirection: row) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $flexDirection;
+}
+
+.form {
+    @include centreIt(column);
+    padding: 0.6rem;
+    
+    >form {
+        @include centreIt(column);
+        
+        >input {
+            display: inline;
+            // width: 100%;
+            width: 22rem;
+            // max-width: 25rem;
+            padding: 0.6rem;
+            outline: none;
+            border: none;
+            margin: 0.5rem;
+        }
+    }
+}
+
+.form-container {
+    @include centreIt(column);
+    height: 100%;
+
+    .form-title {
+        font-weight: bold;
+        font-size: 1.6rem;
+    }
+}

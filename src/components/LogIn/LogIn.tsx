@@ -19,7 +19,7 @@ const LogIn: React.FC = (): JSX.Element => {
     return (
         <div className='form-container log-in'>
             <div className='form-title'>Log In</div>
-            <Form />
+            <Form {...formProps}/>
         </div>
     );
 };

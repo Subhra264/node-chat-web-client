@@ -1,3 +1,5 @@
+import './Form.scss';
+
 interface InputField {
     type: string;
     required?: boolean;
@@ -23,7 +25,7 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
     }
 
     return (
-        <div>
+        <div className='form'>
             <form>
                 {inputElems}
                 <input type='submit' value='Submit' />
