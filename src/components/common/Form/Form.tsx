@@ -28,7 +28,7 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
         <div className='form'>
             <form>
                 {inputElems}
-                <input type='submit' value='Submit' />
+                <input type='submit' value='Submit' id='submit-button'/>
             </form>
         </div>
     );
