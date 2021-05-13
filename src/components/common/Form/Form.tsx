@@ -1,3 +1,4 @@
+import React from 'react';
 import './Form.scss';
 
 interface InputField {
@@ -7,17 +8,23 @@ interface InputField {
     value?: string;
     readonly?: boolean;
     className?: string;
+    onChange?: React.ChangeEventHandler
+}
+
+interface FormInputProps {
+    [field: string]: InputField;
 }
 
 export interface FormProps {
-    [field: string]: InputField;
+    fields: FormInputProps;
+    onSubmit: React.MouseEventHandler<HTMLInputElement>
 }
 
 const Form: React.FC<FormProps> = (props): JSX.Element => {
     const inputElems: JSX.Element[] = [];
 
-    for(const field in props) {
-        const inputField: InputField = props[field];
+    for(const field in props.fields) {
+        const inputField: InputField = props.fields[field];
 
         inputElems.push(
             <input placeholder={field} {...inputField} key={field} />
@@ -28,7 +35,7 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
         <div className='form'>
             <form>
                 {inputElems}
-                <input type='submit' value='Submit' id='submit-button'/>
+                <input type='submit' value='Submit' id='submit-button' onClick={props.onSubmit}/>
             </form>
         </div>
     );
