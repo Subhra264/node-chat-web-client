@@ -1,0 +1,13 @@
+#body-container {
+    display: flex;
+
+    #groups {
+        height: 100%;
+        .group {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+    }
+
+}
