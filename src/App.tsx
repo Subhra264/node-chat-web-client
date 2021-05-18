@@ -9,13 +9,13 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <Route path='/log-in'>
+        <Route path='/log-in' exact>
           <LogIn />
         </Route>
-        <Route path='/sign-up'>
+        <Route path='/sign-up' exact>
           <SignUp />
         </Route>
-        <Route path='/' exact>
+        <Route path='/channels/:groupId/:channelId' >
           <Protected />
         </Route>
       </Switch>
