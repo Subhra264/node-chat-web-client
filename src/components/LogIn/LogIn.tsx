@@ -1,4 +1,4 @@
-import Form, { FormProps } from "../common/Form/Form";
+import Form, { FormProps } from "../Form/Form";
 import authenticate from '../../utils/authenticate';
 import React, { useState } from "react";
 

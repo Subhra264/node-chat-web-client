@@ -1,5 +1,4 @@
-import BodyContainer from "./BodyContainer/BodyContainer"
-
+import BodyContainer from "./BodyContainer/ChatBodyContainer/ChatBodyContainer"
 
 const Protected: React.FC = () => {
     return (

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Form, { FormProps } from "../common/Form/Form";
+import Form, { FormProps } from "../Form/Form";
 import authenticate from '../../utils/authenticate';
 
 const SignUp: React.FC = (): JSX.Element => {

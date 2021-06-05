@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import LogIn from './components/LogIn/LogIn';
 import SignUp from './components/SignUp/SignUp';
 import Protected from './components/Protected/Protected';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   return (
@@ -15,7 +16,10 @@ function App() {
         <Route path='/sign-up' exact>
           <SignUp />
         </Route>
-        <Route path='/channels/:groupId/:channelId' >
+        <Route path='/not-found' exact>
+          <NotFound />
+        </Route>
+        <Route >
           <Protected />
         </Route>
       </Switch>
