@@ -1,11 +1,4 @@
-@mixin centreIt($flexDirection: row) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: $flexDirection;
-}
-
-$backgroundColor: #e0e0e0;
+@import 'src/utils/styles';
 
 .form {
     @include centreIt(column);
@@ -26,16 +19,14 @@ $backgroundColor: #e0e0e0;
             margin: 0.5rem;
             border-radius: 0px;
             background: $backgroundColor;
-            box-shadow: inset 2px 2px 5px #d0d0d0, 
-                        inset -2px -2px 5px #f0f0f0;
+            @include insetBoxShadow(2px, 5px);
         }
     }
 }
 
 #submit-button {
     cursor: pointer;
-    box-shadow: 2px 2px 5px #d0d0d0, 
-                -2px -2px 5px #f0f0f0;
+    @include boxShadow();
 }
 
 .form-container {

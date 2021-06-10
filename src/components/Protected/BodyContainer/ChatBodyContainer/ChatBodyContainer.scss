@@ -1,12 +1,18 @@
+@import 'src/utils/styles';
+
 #chat-body-container {
     display: flex;
 
     #group-list {
         height: 100%;
         .group {
-            width: 2rem;
-            height: 2rem;
+            @include centreIt();
+            width: 3rem;
+            margin: 0.5rem 0.4rem 0rem;
+            height: 3rem;
             border-radius: 50%;
+            @include boxShadow();
+            color: $textColor;
         }
     }
 

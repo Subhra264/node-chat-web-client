@@ -1,8 +1,10 @@
+@import 'src/utils/styles';
+
 * {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
-  color: #675b5b;
+  color: $textColor;
 }
 
 body {
@@ -12,7 +14,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #e0e0e0;
+  background-color: $backgroundColor;
   width: 100vw;
   height: 100vh;
 }

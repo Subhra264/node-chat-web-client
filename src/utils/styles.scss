@@ -1,0 +1,19 @@
+@mixin centreIt($flexDirection: row) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $flexDirection;
+}
+
+@mixin boxShadow($blur: 5px, $distance: 10px) {
+    box-shadow: $blur $blur $distance #201f1f,
+                (-$blur) (-$blur) $distance #3c3b3b;
+}
+
+@mixin insetBoxShadow($blur: 5px, $distance: 10px) {
+    box-shadow: inset $blur $blur $distance #201f1f,
+                inset (-$blur) (-$blur) $distance #3c3b3b;
+}
+
+$backgroundColor: #2e2d2d;
+$textColor: #bfd3d8;
