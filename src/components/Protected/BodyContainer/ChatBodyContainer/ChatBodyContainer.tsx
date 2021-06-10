@@ -4,6 +4,8 @@ import GroupList, { Group } from "../GroupList/GroupList";
 import './ChatBodyContainer.scss';
 import { useParams } from "react-router";
 import io, { Socket } from 'socket.io-client';
+import Chat from "../Chat/Chat";
+import MemberList from "../MemberList/MemberList";
 
 interface URIParams {
     groupId: string;
@@ -38,7 +40,7 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
         }).catch((err: Error) => {
             console.log(err);
         })
-    }, []);
+    }, [groupId, channelId]);
 
     useEffect(() => {
         socket.current = io(`channels/${groupId}/${channelId}`, {
@@ -54,6 +56,8 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
         <div id='chat-body-container' >
             <GroupList groups={groups} />
             <ChannelList channels={channels} />
+            <Chat />
+            <MemberList />
         </div>
     );
 };

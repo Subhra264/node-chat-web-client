@@ -10,7 +10,7 @@
         .group {
             @include centreIt();
             width: 3rem;
-            margin: 0.5rem 0.4rem 0rem;
+            margin: 0.5rem auto 0rem;
             height: 3rem;
             border-radius: 50%;
             @include boxShadow();
@@ -18,17 +18,31 @@
         }
     }
 
-    #channel-list {
+    .item-list {
         height: 100%;
         min-width: 10rem;
         flex-grow: 6;
         background-color: #252121;
 
-        .channel {
+        .item {
             padding: 0.5rem;
             margin: 1rem 0.7rem 0rem;
             text-align: center;
             @include boxShadow(5px, 10px, #20101f, #393939);
         }
     }
+
+    // #group-member-list {
+    //     height: 100%;
+    //     min-width: 10rem;
+    //     flex-grow: 6;
+    //     background-color: #252121;
+
+    //     .member {
+    //         padding: 0.5rem;
+    //         margin: 1rem 0.7rem 0rem;
+    //         text-align: center;
+    //         @include boxShadow(5px, 10px, #20101f, #393939);
+    //     }
+    // }
 }

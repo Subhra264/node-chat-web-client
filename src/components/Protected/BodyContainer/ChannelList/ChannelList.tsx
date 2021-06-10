@@ -32,25 +32,25 @@ interface ChannelListProps {
 
 const ChannelList: React.FC<ChannelListProps> = (props: ChannelListProps): JSX.Element => {
     return (
-        <div id='channel-list'>
+        <div className='item-list'>
             {
                 props.channels?.textChannels?.map((channel) => (
-                    <div key={channel.id} className={`channel ${channel.type}`}>
+                    <div key={channel.id} className={`item ${channel.type}`}>
                         <Link to='' >{channel.name}</Link>
                     </div>
                 ))
             }
-            <div className='channel'>
+            <div className='item'>
                 +
             </div>
             {
                 props.channels?.voiceChannels?.map((channel) => (
-                    <div key={channel.id} className={`channel ${channel.type}`} >
+                    <div key={channel.id} className={`item ${channel.type}`} >
                         <Link to=''>{channel.name}</Link>
                     </div>
                 ))
             }
-            <div className='channel'>
+            <div className='item'>
                 +
             </div>
         </div>

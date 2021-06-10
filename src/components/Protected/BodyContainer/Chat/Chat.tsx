@@ -1,4 +1,5 @@
 import Editor from './Editor';
+import './Chat.scss';
 
 // interface Message {
 //     msg: string;
@@ -14,11 +15,11 @@ import Editor from './Editor';
 
 const Chat: React.FC = (props): JSX.Element => {
     return (
-        <div className='chat'>
-            <div className='chat-header'>
+        <div id='chat-box'>
+            <div id='chat-header'>
                 {/* {props.channel.name} */}
             </div>
-            <div className='chat-body'>
+            <div id='chat-body'>
                 {
                     // props.messages?.map((message) => (
                     //     <div className={(message.userId === userId)? 'right': 'left'}> 
@@ -27,7 +28,7 @@ const Chat: React.FC = (props): JSX.Element => {
                     // ))
                 }
             </div>
-            <div className='chat-msg'>
+            <div id='chat-msg'>
                 <Editor />
             </div>
         </div>

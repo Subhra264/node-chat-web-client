@@ -1,0 +1,25 @@
+$padding: 0.4rem;
+
+#chat-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 15;
+    height: 100%;
+
+    #chat-header {
+        padding: $padding;
+        flex-grow: 2;
+        border-bottom: solid 1px #393939;
+    }
+
+    #chat-body {
+        flex-grow: 40;
+        padding: $padding;
+        border-bottom: solid 1px #393939;
+    }
+
+    #chat-msg {
+        flex-grow: 4;
+        padding: $padding;
+    }
+}
