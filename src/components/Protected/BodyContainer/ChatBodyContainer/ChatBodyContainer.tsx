@@ -10,7 +10,7 @@ interface URIParams {
     channelId: string;
 }
 
-const BodyContainer: React.FC = (props): JSX.Element => {
+const ChatBodyContainer: React.FC = (props): JSX.Element => {
     const [groups, setGroups] = useState<[Group]>();
     const [channels, setChannels] = useState<Channels>();
     const { groupId, channelId } = useParams<URIParams>();
@@ -58,4 +58,4 @@ const BodyContainer: React.FC = (props): JSX.Element => {
     );
 };
 
-export default BodyContainer;
+export default ChatBodyContainer;

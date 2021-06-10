@@ -1,10 +1,16 @@
-import BodyContainer from "./BodyContainer/ChatBodyContainer/ChatBodyContainer"
+import { Route, Switch } from 'react-router';
+import ChatBodyContainer from './BodyContainer/ChatBodyContainer/ChatBodyContainer';
 
 const Protected: React.FC = () => {
     return (
-        <div>
-            <BodyContainer />
-        </div>
+        <Switch>
+            <Route path='/:groupId/channels/:channelId'>
+                <ChatBodyContainer />
+            </Route>
+            <Route path='/profile/@me'>
+                
+            </Route>
+        </Switch>
     );
 };
 
