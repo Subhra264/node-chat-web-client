@@ -40,7 +40,7 @@ const ChannelList: React.FC<ChannelListProps> = (props: ChannelListProps): JSX.E
                     </div>
                 ))
             }
-            <div>
+            <div className='channel'>
                 +
             </div>
             {
@@ -50,7 +50,7 @@ const ChannelList: React.FC<ChannelListProps> = (props: ChannelListProps): JSX.E
                     </div>
                 ))
             }
-            <div>
+            <div className='channel'>
                 +
             </div>
         </div>
