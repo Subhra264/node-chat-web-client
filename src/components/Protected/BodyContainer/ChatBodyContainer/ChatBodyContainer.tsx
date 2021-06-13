@@ -19,7 +19,7 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
     const socket = useRef<Socket>();
 
     useEffect(() => {
-        fetch('/user/chat', {
+        fetch('api/user/dashboard', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
