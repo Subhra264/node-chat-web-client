@@ -1,4 +1,4 @@
-import Editor from './Editor';
+import ChatFooter from './ChatFooter';
 import './Chat.scss';
 
 interface Message {
@@ -11,7 +11,7 @@ interface Message {
 //     channel: {
 //         name: string;
 //     };
-//     messages?: [Message]
+//     messages: [Message]
 // }
 
 const Chat: React.FC = (props): JSX.Element => {
@@ -47,8 +47,8 @@ const Chat: React.FC = (props): JSX.Element => {
                     </div>
                 </div> */}
             </div>
-            <div id='chat-msg'>
-                <Editor />
+            <div id='chat-footer'>
+                <ChatFooter />
             </div>
         </div>
     );
