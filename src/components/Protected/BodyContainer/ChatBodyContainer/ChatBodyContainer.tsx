@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import io, { Socket } from 'socket.io-client';
 import Chat from "../Chat/Chat";
 import MemberList from "../MemberList/MemberList";
+import { SocketContext } from "../../../../utils/contexts";
 
 interface URIParams {
     groupId: string;
@@ -16,13 +17,14 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
     const [groups, setGroups] = useState<[Group]>();
     const [channels, setChannels] = useState<Channels>();
     const { groupId, channelId } = useParams<URIParams>();
-    const socket = useRef<Socket>();
+    const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
         fetch('api/user/dashboard', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer `
             },
             body: JSON.stringify({
                 groupId,
@@ -43,21 +45,23 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
     }, [groupId, channelId]);
 
     useEffect(() => {
-        socket.current = io(`channels/${groupId}/${channelId}`, {
+        socketRef.current = io(`channels/${groupId}/${channelId}`, {
             transports: ['websocket']
         });
 
         return () => {
-            socket.current?.off();
+            socketRef.current?.off();
         }
     }, []);
     
     return (
         <div id='chat-body-container' >
-            <GroupList groups={groups} />
-            <ChannelList channels={channels} />
-            <Chat />
-            <MemberList />
+            <SocketContext.Provider value={socketRef.current}>
+                <GroupList groups={groups} />
+                <ChannelList channels={channels} />
+                <Chat />
+                <MemberList />
+            </SocketContext.Provider>
         </div>
     );
 };

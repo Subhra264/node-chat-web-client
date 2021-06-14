@@ -7,14 +7,15 @@ interface Message {
     userId: string;
 }
 
-// interface ChatProps {
-//     channel: {
-//         name: string;
-//     };
-//     messages: [Message]
-// }
+interface ChatProps {
+    channel: {
+        name: string;
+    };
+    messages: [Message];
+}
 
 const Chat: React.FC = (props): JSX.Element => {
+
     return (
         <div id='chat-box'>
             <div id='chat-header'>
