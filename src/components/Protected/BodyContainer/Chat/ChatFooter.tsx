@@ -3,6 +3,7 @@ import { SocketContext } from '../../../../utils/contexts';
 
 const ChatFooter: React.FC = (props): JSX.Element => {
     const [message, setMessage] = useState('');
+    const [placeholder, setPlaceholder] = useState('Type here...');
     const chatBodyRef: React.MutableRefObject<HTMLElement | null> = useRef<HTMLElement | null>(null);
     const socket = useContext(SocketContext);
 
@@ -16,6 +17,10 @@ const ChatFooter: React.FC = (props): JSX.Element => {
 
     const onSendClick: MouseEventHandler<HTMLButtonElement> = (ev: MouseEvent<HTMLButtonElement>) => {
         ev.preventDefault();
+        if (!message) {
+            setPlaceholder('Please type something...');
+            return;
+        }
 
         fetch('api/group/text-channel/message', {
             method: 'PUT',
@@ -41,13 +46,15 @@ const ChatFooter: React.FC = (props): JSX.Element => {
         messageElem.innerText = message;
 
         chatBodyRef.current?.appendChild(messageElem);
+        console.log(socket);
+        setMessage('');
         // socket?.emit('send-message', { message, userId, userName });
     }
 
     return (
         <>
             <div className='editor-container'>
-                <textarea id="editor" placeholder="Type here..." onChange={onChange} value={message} />
+                <textarea id="editor" placeholder={placeholder} onChange={onChange} value={message} />
             </div>
             <div className='send'>
                 <button onClick={onSendClick} >Send</button>
