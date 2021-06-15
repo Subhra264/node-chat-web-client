@@ -31,26 +31,30 @@ interface ChannelListProps {
 }
 
 const ChannelList: React.FC<ChannelListProps> = (props: ChannelListProps): JSX.Element => {
+    const createTextChannel = () => {
+        // TODO: Open a modal box
+    };
+
     return (
         <div className='item-list'>
             {
                 props.channels?.textChannels?.map((channel) => (
                     <div key={channel.id} className={`item ${channel.type}`}>
-                        <Link to='' >{channel.name}</Link>
+                        <Link to='' className='link'>{channel.name}</Link>
                     </div>
                 ))
             }
-            <div className='item'>
+            <div className='item add-item' onClick={createTextChannel}>
                 +
             </div>
             {
                 props.channels?.voiceChannels?.map((channel) => (
                     <div key={channel.id} className={`item ${channel.type}`} >
-                        <Link to=''>{channel.name}</Link>
+                        <Link to='' className='link'>{channel.name}</Link>
                     </div>
                 ))
             }
-            <div className='item'>
+            <div className='item add-item'>
                 +
             </div>
         </div>
