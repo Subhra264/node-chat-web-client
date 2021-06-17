@@ -3,7 +3,7 @@ import './Chat.scss';
 
 interface Message {
     msg: string;
-    userName: string;
+    username: string;
     userId: string;
 }
 
@@ -28,7 +28,7 @@ const Chat: React.FC = (props): JSX.Element => {
                     //         {
                     //             (message.userId !== userId)? 
                     //                 <div className='left'>
-                    //                     {message.userName}
+                    //                     {message.username}
                     //                 </div>
                     //             : ''
                     //         }

@@ -2,7 +2,7 @@
 
 interface Member {
     _id: string;
-    userName: string;
+    username: string;
     profilePic: string;
 }
 
@@ -19,7 +19,7 @@ const MemberList: React.FC = (props): JSX.Element => {
             {
                 // props.members?.map((member: Member) => (
                 //     <div key={member._id} className='item'>
-                //         <Link to={`profile/${member._id}`}>{member.userName}</Link>
+                //         <Link to={`profile/${member._id}`}>{member.username}</Link>
                 //     </div>
                 // ))
             }

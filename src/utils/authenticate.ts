@@ -9,7 +9,7 @@ export default async function authenticate(authUri: string, reqBody: any) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({reqBody})
+            body: JSON.stringify(reqBody)
         });
 
         response = await response.json();

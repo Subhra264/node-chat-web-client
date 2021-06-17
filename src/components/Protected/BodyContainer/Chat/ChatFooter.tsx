@@ -48,7 +48,7 @@ const ChatFooter: React.FC = (props): JSX.Element => {
         chatBodyRef.current?.appendChild(messageElem);
         console.log(socket);
         setMessage('');
-        // socket?.emit('send-message', { message, userId, userName });
+        // socket?.emit('send-message', { message, userId, username });
     }
 
     return (

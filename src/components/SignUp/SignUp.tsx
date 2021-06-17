@@ -22,7 +22,7 @@ const SignUp: React.FC = (): JSX.Element => {
     const signUp: React.MouseEventHandler = async (ev: React.MouseEvent) => {
         ev.preventDefault();
 
-        const response = await authenticate('signin', {
+        const response = await authenticate('signup', {
             username,
             email,
             password
