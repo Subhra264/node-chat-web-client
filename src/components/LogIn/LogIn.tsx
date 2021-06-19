@@ -13,6 +13,8 @@ const LogIn: React.FC = (): JSX.Element => {
     const dispatch: Dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
+    const locationState: any = location.state;
+    console.log(location);
 
     const changeUsername: React.ChangeEventHandler = (ev: React.ChangeEvent) => {
         setUsername((ev.target as HTMLInputElement)?.value);
@@ -40,7 +42,8 @@ const LogIn: React.FC = (): JSX.Element => {
 
             // Get the redirect_to query if available
             const searchParams = new URLSearchParams(location.search);
-            const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
+            // const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
+            const redirectTo = locationState.redirectTo? locationState.redirectTo : '/profile/@me';
             history.push(redirectTo);
 
         } catch(err) {
