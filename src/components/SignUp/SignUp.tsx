@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Form, { FormProps } from "../Form/Form";
 import authenticate from '../../utils/authenticate';
+import { useHistory } from "react-router-dom";
 
 const SignUp: React.FC = (): JSX.Element => {
     const[username, setUsername] = useState('');
     const[password, setPassword] = useState('');
     const[email, setEmail] = useState('');
+    const history = useHistory();
     
     const changeUsername: React.ChangeEventHandler = (ev: React.ChangeEvent) => {
         setUsername((ev.target as HTMLInputElement)?.value);
@@ -22,13 +24,17 @@ const SignUp: React.FC = (): JSX.Element => {
     const signUp: React.MouseEventHandler = async (ev: React.MouseEvent) => {
         ev.preventDefault();
 
-        const response = await authenticate('signup', {
-            username,
-            email,
-            password
-        });
+        try {
+            const response = await authenticate('signup', {
+                username,
+                email,
+                password
+            });
 
-        console.log(response);
+            history.push('/log-in');
+        } catch(err) {
+            console.log(err);
+        }
     };
 
     const formProps: FormProps = {

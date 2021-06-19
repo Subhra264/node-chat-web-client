@@ -52,7 +52,7 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
         return () => {
             socketRef.current?.off();
         }
-    }, []);
+    }, [channelId, groupId]);
     
     return (
         <div id='chat-body-container' >
