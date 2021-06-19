@@ -1,14 +1,17 @@
-import { AUTHENTICATE_USER, SIGN_OUT } from "../actions/User.actions";
+import { Reducer } from "redux";
+import { AUTHENTICATE_USER, SIGN_OUT, Action, UserAction } from "../actions/User.actions";
 
 const initialUserState = null;
 
-export default function UserReducer(state: null | string = initialUserState, action: any) {
+const UserReducer: Reducer<string | null, Action> = (state: null | string = initialUserState, action: Action) => {
     switch(action.type) {
         case AUTHENTICATE_USER: 
-            return action.payload;
+            return (action as UserAction).payload;
         case SIGN_OUT: 
             return null;
         default:
             return state;
     }
 }
+
+export default UserReducer;
