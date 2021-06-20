@@ -21,6 +21,7 @@ const ChatFooter: React.FC = (props): JSX.Element => {
             setPlaceholder('Please type something...');
             return;
         }
+        const trimmedMessage = message.trim();
 
         fetch('api/group/text-channel/message', {
             method: 'PUT',
@@ -29,21 +30,21 @@ const ChatFooter: React.FC = (props): JSX.Element => {
                 'Authorization': `Bearer `
             },
             body: JSON.stringify({
-                message,
+                message: trimmedMessage
                 // groupId,
                 // channelId
             })
         }).then(res => (
             res.json()
         )).then(result => {
-            if (result.type === 'error') throw new Error(result.message);
+            if (result.type === 'error') throw new Error(result.message.message);
         }).catch(err => {
-            console.log('Error sending message:', err);
+            console.log('Error sending message:', err.message);
         });
 
         const messageElem: HTMLDivElement = document.createElement('div');
         messageElem.classList.add('right');
-        messageElem.innerText = message;
+        messageElem.innerText = trimmedMessage;
 
         chatBodyRef.current?.appendChild(messageElem);
         console.log(socket);

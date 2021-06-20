@@ -43,7 +43,7 @@ const LogIn: React.FC = (): JSX.Element => {
             // Get the redirect_to query if available
             const searchParams = new URLSearchParams(location.search);
             // const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
-            const redirectTo = locationState.redirectTo? locationState.redirectTo : '/profile/@me';
+            const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
             history.push(redirectTo);
 
         } catch(err) {

@@ -10,6 +10,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
+        <Route path='/' exact>
+          
+        </Route>  
         <Route path='/log-in' exact>
           <LogIn />
         </Route>

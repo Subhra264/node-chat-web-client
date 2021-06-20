@@ -21,7 +21,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
                     </div>
                 ))
             }
-            <div className='group'>+</div>
+            <div className='group' id='add-group'>+</div>
         </div>
     )
 };
