@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { Route, Switch, Redirect } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import ChatBodyContainer from './BodyContainer/ChatBodyContainer/ChatBodyContainer';
+import Profile from './BodyContainer/Profile/Profile';
 
 const Protected: React.FC = () => {
     const isAuthenticated = useSelector(state => state);
@@ -27,7 +28,7 @@ const Protected: React.FC = () => {
                 <ChatBodyContainer />
             </Route>,
             <Route path='/profile/@me' key='my-profile'>
-                
+                <Profile />
             </Route>
         ];
     }
