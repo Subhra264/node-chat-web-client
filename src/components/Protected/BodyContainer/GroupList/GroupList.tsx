@@ -26,7 +26,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
         ev.preventDefault();
 
         setShow(true);
-    }
+    };
 
     const createGroup: MouseEventHandler = (ev: MouseEvent) => {
         ev.preventDefault();
@@ -60,7 +60,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
             }
         },
         onSubmit: createGroup
-    }
+    };
 
     return (
         <div id='group-list'>
@@ -74,7 +74,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
             <div className='group' id='add-group' onClick={openModalBox}>+</div>
             <ModalBox show={show} form={formProps}/>
         </div>
-    )
+    );
 };
 
 export default GroupList;

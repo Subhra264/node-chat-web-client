@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Form, { FormProps } from "../Form/Form";
+import './ModalBox.scss';
 
 interface ModalBoxProps {
     show: boolean;
@@ -8,15 +9,20 @@ interface ModalBoxProps {
 }
 
 const ModalBox: React.FC<ModalBoxProps> = (props: ModalBoxProps): JSX.Element => {
+    const [isClosed, setIsClosed] = useState(false);
+
+    const closeModal = () => {
+        setIsClosed(true);
+    };
 
     return (
-        <div className={`modal-box-container ${props.show}`} >
+        <div className={`modal-box-container ${props.show && !isClosed? '' : 'display-none'}`} >
             <div className='modal-box'>
                 <div className='modal-box-header'>
                     <div className='modal-box-name'>
 
                     </div>
-                    <div className='close-button'>
+                    <div className='close-button' onClick={closeModal}>
                         &times;
                     </div>
                 </div>
