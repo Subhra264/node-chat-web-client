@@ -20,16 +20,12 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
     const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
-        fetch('api/user/dashboard', {
-            method: 'POST',
+        fetch(`api/user/dashboard/${groupId}/${channelId}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer `
-            },
-            body: JSON.stringify({
-                groupId,
-                channelId
-            })
+            }
         }).then((response) => {
             return response.json();
         }).then((result) => {
