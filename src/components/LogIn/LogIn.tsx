@@ -1,8 +1,8 @@
 import Form, { FormProps } from "../Form/Form";
-import authenticate from '../../utils/authenticate';
+import { FetchDetails, protectedRequest } from '../../utils/fetch-requests';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { authenticateUser } from "../../utils/actions/User.actions";
+import { manageUser } from "../../utils/actions/User.actions";
 import { useHistory, useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 
@@ -28,27 +28,51 @@ const LogIn: React.FC = (): JSX.Element => {
         setEmail((ev.target as HTMLInputElement)?.value);
     };
 
-    const logIn: React.MouseEventHandler = async (ev: React.MouseEvent) => {
+    const logIn: React.MouseEventHandler = (ev: React.MouseEvent) => {
         ev.preventDefault();
 
-        try {
-            const response = await authenticate('signin', {
+        // try {
+        //     const response = await authenticate('signin', {
+        //         username,
+        //         email,
+        //         password
+        //     });
+
+        //     dispatch(manageUser(response));
+
+        //     // Get the redirect_to query if available
+        //     // const searchParams = new URLSearchParams(location.search);
+        //     // const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
+        //     const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
+        //     history.push(redirectTo);
+
+        // } catch(err) {
+        //     console.log(err);
+        // }
+
+        const successHandler = (result: any) => {
+            dispatch(manageUser(result));
+
+            // Get the redirectTo query if available
+            const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
+            history.push(redirectTo);
+        };
+
+        const errorHandler = (err: Error) => {
+            console.log('Error while login:', err.message);
+        };
+
+        const fetchDetails: FetchDetails = {
+            fetchURI: '/api/auth/signin',
+            method: 'POST',
+            body: {
                 username,
                 email,
                 password
-            });
+            }
+        };
 
-            dispatch(authenticateUser(response));
-
-            // Get the redirect_to query if available
-            const searchParams = new URLSearchParams(location.search);
-            // const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
-            const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
-            history.push(redirectTo);
-
-        } catch(err) {
-            console.log(err);
-        }
+        protectedRequest(fetchDetails, '', successHandler, errorHandler);
     };
 
     const formProps: FormProps = {

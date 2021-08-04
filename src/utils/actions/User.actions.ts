@@ -1,23 +1,24 @@
-export const AUTHENTICATE_USER = 'AUTHENTICATE_USER';
-export const SIGN_OUT = 'SIGN_OUT';
+export const MANAGE_USER = 'MANAGE_USER';
+// export const SIGN_OUT = 'SIGN_OUT';
 
 export interface Action {
     type: string;
 }
 
 export interface UserAction extends Action{
-    payload: string;
+    payload: string | null;
 }
 
-export function authenticateUser(payload: string): UserAction {
+export function manageUser(payload: string | null): UserAction {
     return {
-        type: AUTHENTICATE_USER,
+        type: MANAGE_USER,
         payload
     };
 }
 
-export function signOut(): Action {
-    return {
-        type: SIGN_OUT,
-    };
-}
+// export function signOut(): Action {
+//     manageUser(null);
+//     return {
+//         type: 'SIGN_OUT',
+//     };
+// }
