@@ -14,7 +14,6 @@ const LogIn: React.FC = (): JSX.Element => {
     const history = useHistory();
     const location = useLocation();
     const locationState: any = location.state;
-    console.log(location);
 
     const changeUsername: React.ChangeEventHandler = (ev: React.ChangeEvent) => {
         setUsername((ev.target as HTMLInputElement)?.value);
@@ -31,26 +30,15 @@ const LogIn: React.FC = (): JSX.Element => {
     const logIn: React.MouseEventHandler = (ev: React.MouseEvent) => {
         ev.preventDefault();
 
-        // try {
-        //     const response = await authenticate('signin', {
-        //         username,
-        //         email,
-        //         password
-        //     });
-
-        //     dispatch(manageUser(response));
-
-        //     // Get the redirect_to query if available
-        //     // const searchParams = new URLSearchParams(location.search);
-        //     // const redirectTo = (searchParams.get('redirect_to')? searchParams.get('redirect_to') : '/profile/@me') as string;
-        //     const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
-        //     history.push(redirectTo);
-
-        // } catch(err) {
-        //     console.log(err);
-        // }
-
         const successHandler = (result: any) => {
+            // Store the userId and username in the localstorage so that
+            // When the user refreshes the page, we can read the userId and the
+            // username just to know that the user is already logged in.
+            // The access-token must not be stored in localstorage.
+            localStorage.setItem('user', JSON.stringify({
+                username: result.username,
+                userId: result.userId
+            }));
             dispatch(manageUser(result));
 
             // Get the redirectTo query if available
@@ -72,6 +60,7 @@ const LogIn: React.FC = (): JSX.Element => {
             }
         };
 
+        // We don't need to send any access key to '/signin' route
         protectedRequest(fetchDetails, '', successHandler, errorHandler);
     };
 

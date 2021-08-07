@@ -1,5 +1,8 @@
 import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
+import { User } from '../../../../utils/reducers/User.reducer';
 import { FormProps } from '../../../Form/Form';
 import ModalBox from '../../../ModalBox/ModalBox';
 
@@ -17,6 +20,7 @@ interface GroupListProps {
 const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element => {
     const [show, setShow] = useState(false);
     const [groupName, setGroupName] = useState('');
+    const user = useSelector<User, User>((state: User) => state);
     
     const onGroupNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
         setGroupName(ev.target.value);
@@ -31,22 +35,23 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
     const createGroup: MouseEventHandler = (ev: MouseEvent) => {
         ev.preventDefault();
 
-        fetch('/api/group', {
+        const successHandler = (result: any) => {
+            console.log('New Group result', result);
+        };
+
+        const errorHandler = (err: Error) => {
+            console.log('Error creating new Group', err.message);
+        };
+
+        const fetchDetails: FetchDetails = {
+            fetchURI: '/api/group',
             method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer `
-            },
-            body: JSON.stringify({
+            body: {
                 name: groupName
-            })
-        }).then(res => (
-            res.json()
-        )).then(result => {
-            console.log(result);
-        }).catch(err => {
-            console.log('Error creating new Group', err);
-        });
+            }
+        };
+        const accessToken = user.accessToken? user.accessToken : '';
+        protectedRequest(fetchDetails, accessToken, successHandler, errorHandler);
     };
 
     const formProps: FormProps = {
