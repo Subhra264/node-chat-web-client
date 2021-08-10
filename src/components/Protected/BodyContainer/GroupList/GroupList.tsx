@@ -37,6 +37,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
 
         const successHandler = (result: any) => {
             console.log('New Group result', result);
+            setShow(false);
         };
 
         const errorHandler = (err: Error) => {
@@ -77,7 +78,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
                 ))
             }
             <div className='group' id='add-group' onClick={openModalBox}>+</div>
-            <ModalBox show={show} form={formProps}/>
+            <ModalBox show={show} setShow={setShow} form={formProps}/>
         </div>
     );
 };

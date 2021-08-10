@@ -4,19 +4,19 @@ import './ModalBox.scss';
 
 interface ModalBoxProps {
     show: boolean;
+    setShow: React.Dispatch<React.SetStateAction<boolean>>;
     form?: FormProps;
     info?: string;
 }
 
 const ModalBox: React.FC<ModalBoxProps> = (props: ModalBoxProps): JSX.Element => {
-    const [isClosed, setIsClosed] = useState(false);
 
     const closeModal = () => {
-        setIsClosed(true);
+        props.setShow(!props.show);
     };
 
     return (
-        <div className={`modal-box-container ${props.show && !isClosed? '' : 'display-none'}`} >
+        <div className={`modal-box-container ${props.show? '' : 'display-none'}`} >
             <div className='modal-box'>
                 <div className='modal-box-header'>
                     <div className='modal-box-name'>

@@ -12,7 +12,7 @@ export default class ResponseError extends Error {
     constructor (responseError: ResponseErrorJSON) {
         super(responseError.message);
         this.status = responseError.status;
-        this.code = responseError.code; 
+        if (responseError.code) this.code = responseError.code;
         this.isResponseError = true;
     }
 }
