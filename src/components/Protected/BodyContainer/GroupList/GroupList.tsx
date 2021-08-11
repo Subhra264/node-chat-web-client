@@ -1,5 +1,5 @@
 import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
 import { User } from '../../../../utils/reducers/User.reducer';
@@ -21,6 +21,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
     const [show, setShow] = useState(false);
     const [groupName, setGroupName] = useState('');
     const user = useSelector<User, User>((state: User) => state);
+    const dispatch = useDispatch();
     
     const onGroupNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
         setGroupName(ev.target.value);
@@ -52,7 +53,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
             }
         };
         const accessToken = user.accessToken? user.accessToken : '';
-        protectedRequest(fetchDetails, accessToken, successHandler, errorHandler);
+        protectedRequest(fetchDetails, accessToken, successHandler, errorHandler, dispatch);
     };
 
     const formProps: FormProps = {

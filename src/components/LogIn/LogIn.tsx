@@ -1,5 +1,5 @@
 import Form, { FormProps } from "../Form/Form";
-import { FetchDetails, protectedRequest } from '../../utils/fetch-requests';
+import { authenticate, FetchDetails, protectedRequest } from '../../utils/fetch-requests';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { manageUser } from "../../utils/actions/User.actions";
@@ -27,10 +27,16 @@ const LogIn: React.FC = (): JSX.Element => {
         setEmail((ev.target as HTMLInputElement)?.value);
     };
 
-    const logIn: React.MouseEventHandler = (ev: React.MouseEvent) => {
-        ev.preventDefault();
+    const logIn: React.MouseEventHandler = async (ev: React.MouseEvent) => {
+        
+        try {
+            ev.preventDefault();
+            const result = await authenticate('signin', {
+                username,
+                email,
+                password
+            });
 
-        const successHandler = (result: any) => {
             // Store the userId and username in the localstorage so that
             // When the user refreshes the page, we can read the userId and the
             // username just to know that the user is already logged in.
@@ -44,24 +50,11 @@ const LogIn: React.FC = (): JSX.Element => {
             // Get the redirectTo query if available
             const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';
             history.push(redirectTo);
-        };
 
-        const errorHandler = (err: Error) => {
+        } catch(err) {
             console.log('Error while login:', err.message);
-        };
+        }
 
-        const fetchDetails: FetchDetails = {
-            fetchURI: '/api/auth/signin',
-            method: 'POST',
-            body: {
-                username,
-                email,
-                password
-            }
-        };
-
-        // We don't need to send any access key to '/signin' route
-        protectedRequest(fetchDetails, '', successHandler, errorHandler);
     };
 
     const formProps: FormProps = {
