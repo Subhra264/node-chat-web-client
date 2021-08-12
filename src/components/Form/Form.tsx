@@ -17,7 +17,8 @@ interface FormInputProps {
 
 export interface FormProps {
     fields: FormInputProps;
-    onSubmit: React.MouseEventHandler<HTMLInputElement>
+    onSubmit: React.MouseEventHandler<HTMLInputElement>;
+    children?: JSX.Element;
 }
 
 const Form: React.FC<FormProps> = (props): JSX.Element => {

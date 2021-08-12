@@ -1,10 +1,11 @@
-import Form, { FormProps } from "../Form/Form";
-import { authenticate, FetchDetails, protectedRequest } from '../../utils/fetch-requests';
+import { FormProps } from "../Form/Form";
+import { authenticate } from '../../utils/fetch-requests';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { manageUser } from "../../utils/actions/User.actions";
 import { useHistory, useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
+import AuthenticationForm, { AuthenticationFormProps } from "../Form/AuthenticationForm";
 
 const LogIn: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
@@ -57,7 +58,7 @@ const LogIn: React.FC = (): JSX.Element => {
 
     };
 
-    const formProps: FormProps = {
+    const formProps: AuthenticationFormProps = {
         fields: {
             username: {
                 type: 'text',
@@ -75,13 +76,14 @@ const LogIn: React.FC = (): JSX.Element => {
                 onChange: changePassword
             }
         },
-        onSubmit: logIn
+        onSubmit: logIn,
+        redirectTo: locationState?.redirectTo? locationState.redirectTo : '/profile/@me'
     };
 
     return (
         <div className='form-container log-in'>
             <div className='form-title'>Log In</div>
-            <Form {...formProps}/>
+            <AuthenticationForm {...formProps} />
         </div>
     );
 };

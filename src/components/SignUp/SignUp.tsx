@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import Form, { FormProps } from '../Form/Form';
-import { FetchDetails, protectedRequest } from '../../utils/fetch-requests';
 import { useHistory } from 'react-router-dom';
+import { authenticate } from '../../utils/fetch-requests';
+import AuthenticationForm, { AuthenticationFormProps } from '../Form/AuthenticationForm';
 
 const SignUp: React.FC = (): JSX.Element => {
     const[username, setUsername] = useState('');
@@ -24,40 +24,20 @@ const SignUp: React.FC = (): JSX.Element => {
     const signUp: React.MouseEventHandler = async (ev: React.MouseEvent) => {
         ev.preventDefault();
 
-        // try {
-        //     const response = await authenticate('signup', {
-        //         username,
-        //         email,
-        //         password
-        //     });
-
-        //     history.push('/log-in');
-        // } catch(err) {
-        //     console.log(err);
-        // }
-
-        const successHandler = () => {
-            history.push('/log-in');
-        };
-
-        const errorHandler = (err: Error) => {
-            console.log('Error registering user', err.message);
-        };
-
-        const fetchDetails: FetchDetails = {
-            fetchURI: '/api/auth/signup',
-            method: 'POST',
-            body: {
+        try {
+            await authenticate('signup', {
                 username,
                 email,
                 password
-            }
-        };
+            });
 
-        protectedRequest(fetchDetails, '', successHandler, errorHandler);
+            history.push('/log-in');
+        } catch(err) {
+            console.log(err);
+        }
     };
 
-    const formProps: FormProps = {
+    const formProps: AuthenticationFormProps = {
         fields: {
             username: {
                 type: 'text',
@@ -75,13 +55,14 @@ const SignUp: React.FC = (): JSX.Element => {
                 onChange: changePassword
             }
         },
-        onSubmit: signUp
+        onSubmit: signUp,
+        redirectTo: '/profile/@me'
     };
 
     return (
         <div className='form-container sign-up'>
             <div className='form-title'>Sign Up</div>
-            <Form {...formProps}/>
+            <AuthenticationForm {...formProps} />
         </div>
     );
 };
