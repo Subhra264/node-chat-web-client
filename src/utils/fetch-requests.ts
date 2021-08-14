@@ -18,10 +18,6 @@ export interface FetchDetails {
 // the original endpoint
 function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => void, dispatch: Dispatch<any> ) {
 
-    // Get the refresh token from localStorage
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) throw new Error('login_needed');
-
     const fetchDetails = {
         fetchURI: '/api/auth/refresh-token/',
         method: 'POST'
@@ -44,6 +40,8 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
 
     const errorHandler = (errMessage: string) => {
         // Do something
+        localStorage.removeItem('user');
+        dispatch(manageUser(null));
         throw new Error(errMessage);
     };
 
