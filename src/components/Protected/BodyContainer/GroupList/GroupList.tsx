@@ -1,30 +1,28 @@
-import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
+import useUserSelector from '../../../../hooks/useUserSelector';
+import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
 import { User } from '../../../../utils/reducers/User.reducer';
 import { FormProps } from '../../../Form/Form';
 import ModalBox from '../../../ModalBox/ModalBox';
 
 export interface Group {
-    id: string;
+    _id: string;
     name: string;
-    grpImage?: string;
-    unreadMsg?: number;
+    image?: string;
+    // unreadMsg?: number;
 }
 
-interface GroupListProps {
-    groups: [Group] | undefined;
-}
-
-const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element => {
+const GroupList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
-    const [groupName, setGroupName] = useState('');
-    const user = useSelector<User, User>((state: User) => state);
+    const [newGroupName, setNewGroupName] = useState('');
+    const [fetchedGroupList, setFetchedGroupList] = useState<Group[]>([]);
+    const user: User = useUserSelector();
     const dispatch = useDispatch();
     
     const onGroupNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
-        setGroupName(ev.target.value);
+        setNewGroupName(ev.target.value);
     };
 
     const openModalBox: MouseEventHandler = (ev: MouseEvent) => {
@@ -33,6 +31,7 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
         setShow(true);
     };
 
+    // Called when creating a new Group
     const createGroup: MouseEventHandler = (ev: MouseEvent) => {
         ev.preventDefault();
 
@@ -49,11 +48,19 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
             fetchURI: '/api/group',
             method: 'POST',
             body: {
-                name: groupName
+                name: newGroupName
             }
         };
         const accessToken = user.accessToken? user.accessToken : '';
-        protectedRequest(fetchDetails, accessToken, successHandler, errorHandler, dispatch);
+
+        // Makes POST request to the '/api/group/' endpoint
+        protectedRequest( 
+            fetchDetails,
+            accessToken,
+            successHandler,
+            errorHandler,
+            dispatch
+        );
     };
 
     const formProps: FormProps = {
@@ -62,19 +69,38 @@ const GroupList: React.FC<GroupListProps> = (props: GroupListProps): JSX.Element
                 type: 'text',
                 required: true,
                 placeholder: 'Group Name',
-                value: groupName,
+                value: newGroupName,
                 onChange: onGroupNameChange
             }
         },
         onSubmit: createGroup
     };
 
+    // Fetches the list of groups, the user is part of
+    useEffect(() => {
+        const successHandler = (result: any) => {
+            setFetchedGroupList(result);
+        };
+
+        const errorHandler = (err: Error) => {
+            console.log('Error fetching groupList', err.message);
+        };
+
+        getRequest(
+            '/api/user/groups',
+            user.accessToken? user.accessToken : '',
+            successHandler,
+            errorHandler
+        );
+    }, [user.accessToken]);
+
     return (
         <div id='group-list'>
             {
-                props.groups?.map((group) => (
-                    <div className='group' key={group.id}>
-                        <Link to={group.id}>{group.name}</Link>
+                fetchedGroupList.map((group: Group) => (
+                    <div className='group' key={group._id}>
+                        {/* TODO: The response also return the welcome channel id */}
+                        <Link to={group._id}>{group.name}</Link>
                     </div>
                 ))
             }
