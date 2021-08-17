@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import useUserSelector from '../../hooks/useUserSelector';
 import Form, { FormProps } from './Form';
 
 export interface AuthenticationFormProps extends FormProps{
@@ -7,7 +7,7 @@ export interface AuthenticationFormProps extends FormProps{
 }
 
 const AuthenticationForm: React.FC<AuthenticationFormProps>  = (props: AuthenticationFormProps) => {
-    const isAuthenticated = useSelector(state => state);
+    const isAuthenticated = useUserSelector();
 
     return (
         <>
