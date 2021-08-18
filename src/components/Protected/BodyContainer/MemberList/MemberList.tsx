@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useAccessToken } from "../../../../hooks/useUserSelector";
-import { GroupContext } from "../../../../utils/contexts";
 import { getRequest } from "../../../../utils/fetch-requests";
 
 interface Member {
@@ -12,12 +11,12 @@ interface Member {
 }
 
 interface MemberListProps {
-    members: [Member];
+    fetchURI: string;
+    effectDeps: React.DependencyList;
 }
 
-const MemberList: React.FC = (props): JSX.Element => {
+const MemberList: React.FC<MemberListProps> = (props: MemberListProps): JSX.Element => {
     const [memberList, setMemberList] = useState<Member[]>([]);
-    const { groupId } = useContext(GroupContext);
     const accessToken = useAccessToken();
     const dispatch = useDispatch();
 
@@ -32,13 +31,13 @@ const MemberList: React.FC = (props): JSX.Element => {
 
         // fetches the list of members in the group
         getRequest(
-            `/groups/${groupId}/members`,
+            props.fetchURI,
             accessToken,
             successHandler,
             errorHandler,
             dispatch
         );
-    }, [groupId]);
+    }, [...props.effectDeps]);
 
     return (
         <div className='item-list'>

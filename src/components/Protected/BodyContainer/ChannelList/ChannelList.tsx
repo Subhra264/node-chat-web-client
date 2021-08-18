@@ -45,7 +45,7 @@ interface ChannelListProps {
     channels: ChannelList | undefined;
 }
 
-const ChannelList: React.FC<ChannelListProps> = (props: ChannelListProps): JSX.Element => {
+const ChannelList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
     const [channelList, setChannelList] = useState<Channel[]>([]);
     const [newChannelName, setNewChannelName] = useState('');

@@ -7,6 +7,9 @@
     #group-list {
         height: 100%;
         flex-grow: 2;
+        min-width: 3rem;
+        max-width: 5rem;
+
         .group {
             @include centreIt();
             width: 3rem;

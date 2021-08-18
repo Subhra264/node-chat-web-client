@@ -10,6 +10,7 @@ import ModalBox from '../../../ModalBox/ModalBox';
 export interface Group {
     _id: string;
     name: string;
+    defaultChannel: string;
     image?: string;
     // unreadMsg?: number;
 }
@@ -90,17 +91,21 @@ const GroupList: React.FC = (props): JSX.Element => {
             '/api/user/groups',
             user.accessToken? user.accessToken : '',
             successHandler,
-            errorHandler
+            errorHandler,
+            dispatch
         );
     }, [user.accessToken]);
 
     return (
         <div id='group-list'>
+            <div className="group">
+                <Link to='/profile/@me'>Profile</Link>
+            </div>
             {
                 fetchedGroupList.map((group: Group) => (
                     <div className='group' key={group._id}>
                         {/* TODO: The response also return the welcome channel id */}
-                        <Link to={group._id}>{group.name}</Link>
+                        <Link to={`/${group._id}/channels/${group.defaultChannel}`}>{group.name}</Link>
                     </div>
                 ))
             }

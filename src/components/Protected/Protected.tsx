@@ -5,7 +5,7 @@ import ChatBodyContainer from './BodyContainer/ChatBodyContainer/ChatBodyContain
 import Profile from './BodyContainer/Profile/Profile';
 
 const Protected: React.FC = () => {
-    const isAuthenticated = useUserSelector
+    const isAuthenticated = useUserSelector();
     const location = useLocation();
 
     let routes: JSX.Element[];
@@ -24,11 +24,14 @@ const Protected: React.FC = () => {
         ];
     } else {
         routes = [
-            <Route path='/:groupId/channels/:channelId' key='chat-body'>
+            // <Route path='/:groupId/channels/:channelId' key='chat-body'>
+            //     <ChatBodyContainer />
+            // </Route>,
+            // <Route path='/profile/@me' key='my-profile'>
+            //     <Profile />
+            // </Route>,
+            <Route path={['/:groupId/channels/:channelId', '/profile/@me']} key='chat-body'>
                 <ChatBodyContainer />
-            </Route>,
-            <Route path='/profile/@me' key='my-profile'>
-                <Profile />
             </Route>
         ];
     }

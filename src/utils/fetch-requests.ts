@@ -16,7 +16,7 @@ export interface FetchDetails {
 // Refreshes both the access token and the refresh token
 // and uses the newly generated access token to retry fetching
 // the original endpoint
-function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => void, dispatch: Dispatch<any> ) {
+function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => void, dispatch: Dispatch<any>, mainErrorHandler: (err: Error) => any ) {
 
     const fetchDetails = {
         fetchURI: '/api/auth/refresh-token/',
@@ -38,11 +38,11 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
         retryFetchingWithAccess(result.message.accessToken);
     };
 
-    const errorHandler = (errMessage: string) => {
+    const errorHandler = (err: Error) => {
         // Do something
         localStorage.removeItem('user');
         dispatch(manageUser(null));
-        throw new Error(errMessage);
+        mainErrorHandler(err);
     };
 
     // Makes request to '/api/auth/refresh-token/'
@@ -86,7 +86,7 @@ export async function authenticate(authUri: string, reqBody: any) {
  * @param errorHandler Function to call when an error occurs
  * @param dispatch Though not mandatory, but must be provided to refresh tokens automatically
  */
-export function getRequest (getURI: string, accessToken: string, successHandler: Function, errorHandler: Function, dispatch?: Dispatch<any>) {
+export function getRequest (getURI: string, accessToken: string, successHandler: Function, errorHandler: (err: Error) => any, dispatch?: Dispatch<any>) {
     // Make a GET request to the given getURI
     fetch(getURI, {
         method: 'GET',
@@ -98,14 +98,16 @@ export function getRequest (getURI: string, accessToken: string, successHandler:
         res.json()
     ))
     .then((result: APIResponseBody) => {
-        if (result.type === 'error' && dispatch) {
-            refreshTokens((newAccessToken: string) => (
-                // We don't need to pass the dispatch function here
-                // as we need to refresh the token only once
-                getRequest(getURI, newAccessToken, successHandler, errorHandler)
-            ), dispatch);
-        } else {
-            throw new ResponseError(result.message as ResponseErrorJSON);
+        if (result.type === 'error') {
+            if (result.message.message === 'token_not_valid' && dispatch) {
+                refreshTokens((newAccessToken: string) => (
+                    // We don't need to pass the dispatch function here
+                    // as we need to refresh the token only once
+                    getRequest(getURI, newAccessToken, successHandler, errorHandler)
+                ), dispatch, errorHandler);
+            } else {
+                throw new ResponseError(result.message as ResponseErrorJSON);
+            }
         }
 
         successHandler(result.message);
@@ -125,7 +127,7 @@ export function getRequest (getURI: string, accessToken: string, successHandler:
  * @param errorHandler Function to call when an error occurs
  * @param dispatch Though not mandatory, but must be provided to refresh tokens automatically
  */
-export function protectedRequest (fetchDetails: FetchDetails, accessToken: string, successHandler: Function, errorHandler: Function, dispatch?: Dispatch<any>) {
+export function protectedRequest (fetchDetails: FetchDetails, accessToken: string, successHandler: Function, errorHandler: (err: Error) => any, dispatch?: Dispatch<any>) {
     
     fetch(fetchDetails.fetchURI, {
         method: fetchDetails.method,
@@ -145,7 +147,7 @@ export function protectedRequest (fetchDetails: FetchDetails, accessToken: strin
                 // We don't need to pass dispatch function second time
                 refreshTokens((newAccessToken: string) => (
                     protectedRequest(fetchDetails, newAccessToken, successHandler, errorHandler)
-                ), dispatch);
+                ), dispatch, errorHandler);
             } else {
                 throw new ResponseError(result.message as ResponseErrorJSON);
             }
