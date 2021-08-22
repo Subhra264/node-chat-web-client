@@ -1,6 +1,6 @@
 import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import useUserSelector from '../../../../hooks/useUserSelector';
 import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
 import { User } from '../../../../utils/reducers/User.reducer';
@@ -21,6 +21,7 @@ const GroupList: React.FC = (props): JSX.Element => {
     const [fetchedGroupList, setFetchedGroupList] = useState<Group[]>([]);
     const user: User = useUserSelector();
     const dispatch = useDispatch();
+    const history = useHistory();
     
     const onGroupNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
         setNewGroupName(ev.target.value);
@@ -39,6 +40,11 @@ const GroupList: React.FC = (props): JSX.Element => {
         const successHandler = (result: any) => {
             console.log('New Group result', result);
             setShow(false);
+            setFetchedGroupList(oldGroupList => ([
+                ...oldGroupList,
+                result // Add the new Group to the GroupList
+            ]));
+            history.push(`/${result._id}/channels/${result.defaultChannel}`);
         };
 
         const errorHandler = (err: Error) => {

@@ -1,5 +1,6 @@
 import { Dispatch } from "react";
 import { manageUser } from "./actions/User.actions";
+import { User } from "./reducers/User.reducer";
 import ResponseError, { ResponseErrorJSON } from "./ResponseError";
 
 interface APIResponseBody {
@@ -23,23 +24,25 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
         method: 'POST'
     };
 
-    const successHandler = (result: APIResponseBody) => {
+    const successHandler = (result: User) => {
+        console.log('Refresh token successHanlder', result);
 
         // Update the localStorage
         localStorage.setItem('user', JSON.stringify({
-            username: result.message.username,
-            userId: result.message.userId
+            username: result.username,
+            userId: result.userId
         }));
 
         // Update the User store state
-        dispatch(manageUser(result.message));
+        dispatch(manageUser(result));
 
         // Retry fetching the original endpoint with new access token
-        retryFetchingWithAccess(result.message.accessToken);
+        retryFetchingWithAccess(result.accessToken as string);
     };
 
     const errorHandler = (err: Error) => {
         // Do something
+        console.log('Hello from errorHandler fetchRequest', err);
         localStorage.removeItem('user');
         dispatch(manageUser(null));
         mainErrorHandler(err);
@@ -98,9 +101,10 @@ export function getRequest (getURI: string, accessToken: string, successHandler:
         res.json()
     ))
     .then((result: APIResponseBody) => {
+        console.log('Fetch result', result);
         if (result.type === 'error') {
             if (result.message.message === 'token_not_valid' && dispatch) {
-                refreshTokens((newAccessToken: string) => (
+                return refreshTokens((newAccessToken: string) => (
                     // We don't need to pass the dispatch function here
                     // as we need to refresh the token only once
                     getRequest(getURI, newAccessToken, successHandler, errorHandler)
@@ -145,7 +149,7 @@ export function protectedRequest (fetchDetails: FetchDetails, accessToken: strin
         if (result.type === 'error') {
             if (result.message.message === 'token_not_valid' && dispatch) {
                 // We don't need to pass dispatch function second time
-                refreshTokens((newAccessToken: string) => (
+                return refreshTokens((newAccessToken: string) => (
                     protectedRequest(fetchDetails, newAccessToken, successHandler, errorHandler)
                 ), dispatch, errorHandler);
             } else {

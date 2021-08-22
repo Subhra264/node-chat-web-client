@@ -7,7 +7,7 @@ import {
     useEffect,
     useState
 } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ModalBox from '../../../ModalBox/ModalBox';
 import { FormProps } from '../../../Form/Form';
 import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
@@ -21,7 +21,7 @@ enum ChannelType {
 }
 
 interface Channel {
-    _id: string;
+    reference: string;
     name: string;
     // type: ChannelType;
     // category?: string;
@@ -52,6 +52,7 @@ const ChannelList: React.FC = (props): JSX.Element => {
     const groupContext: GroupContextValue = useContext(GroupContext);
     const accessToken = useAccessToken();
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const onChannelNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
         setNewChannelName(ev.target.value);
@@ -69,6 +70,11 @@ const ChannelList: React.FC = (props): JSX.Element => {
         const successHandler = (result: any) => {
             console.log('New Channel result', result);
             setShow(false);
+            setChannelList(oldChannelList => [
+                ...oldChannelList,
+                result // Add the newly created channel to the channelList
+            ]);
+            history.push(`/${groupContext.groupId}/channels/${result.reference}`);
         };
 
         const errorHandler = (err: Error) => {
@@ -131,8 +137,8 @@ const ChannelList: React.FC = (props): JSX.Element => {
         <div className='item-list'>
             {
                 channelList.map((channel) => (
-                    <div key={channel._id} className={`item`}>
-                        <Link to={`/${groupContext.groupId}/channels/${channel._id}`} className='link'>{channel.name}</Link>
+                    <div key={channel.reference} className={`item`}>
+                        <Link to={`/${groupContext.groupId}/channels/${channel.reference}`}>{channel.name}</Link>
                     </div>
                 ))
             }
