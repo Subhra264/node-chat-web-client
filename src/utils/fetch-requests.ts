@@ -41,14 +41,24 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
     };
 
     const errorHandler = (err: Error) => {
-        // Do something
         console.log('Hello from errorHandler fetchRequest', err);
+        // Remove all user data from all the stores
         localStorage.removeItem('user');
         dispatch(manageUser(null));
+        
+        // Call the actual errorHandler
         mainErrorHandler(err);
     };
 
     // Makes request to '/api/auth/refresh-token/'
+    //! There is a problem here --- When the user refreshes or accesses protected poges the first 
+    //! time ( when the user has a valid refresh token ), some components of a page makes request to /refresh
+    //! -token endpoint at the same time. As a result, the user actually generates multiple 
+    //! access tokens at the same time, which is bad. Though, still the redux store will store 
+    //! the newest access-token, so user will not experience any 'not authorized' problem. But 
+    //! there is no need to create multiple access-tokens. 
+    // Possible solution may come from the client side or the server side.
+    // TODO: Fix the above problem
     protectedRequest(
         fetchDetails,
         '',
