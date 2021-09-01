@@ -5,9 +5,10 @@ import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 import { useAccessToken } from '../../../../hooks/useUserSelector';
 // import { SocketContext } from '../../../../utils/contexts';
 import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
+import { ChatSetMessages, Message } from '../Chat/Chat';
 import './ChatFooter.scss';
 
-export interface ChatFooterProps {
+export interface ChatFooterProps extends ChatSetMessages{
     fetchURI: string;
     socket?: Socket<DefaultEventsMap, DefaultEventsMap> | null;
 }
@@ -62,25 +63,27 @@ const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Elem
             dispatch
         );
 
-        const messageElem: HTMLDivElement = document.createElement('div');
-        messageElem.classList.add('right');
-        messageElem.innerText = trimmedMessage;
+        // In this case, as the user himself sending the message, 
+        // so no need to specify sender seperately
+        // Only the message is important here
+        props.setMessages((prevMessages) => [
+            ...prevMessages,
+            { message: trimmedMessage }
+        ] as [Message]);
 
-        chatBodyRef.current?.appendChild(messageElem);
-        // console.log(socket);
         setMessage('');
         // socket?.emit('send-message', { message, userId, username });
     }
 
     return (
-        <>
+        <div className='chat-footer'>
             <div className='editor-container'>
                 <textarea id="editor" placeholder={placeholder} onChange={onChange} value={message} />
             </div>
             <div className='send'>
                 <button onClick={onSendClick} >Send</button>
             </div>
-        </>
+        </div>
     );
 };
 

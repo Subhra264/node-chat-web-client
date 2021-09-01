@@ -1,20 +1,32 @@
-import ChatFooter from './ChatFooter';
+import { useState } from 'react';
+import SelfChatFooter from '../ChatFooter/SelfChatFooter';
 import './Chat.scss';
+import ChatBody from './ChatBody/ChatBody';
 
-interface Message {
-    msg: string;
-    username: string;
-    userId: string;
+export enum ChatTarget {
+    GROUP = 'GROUP',
+    FRIEND = 'FRIEND',
+    SELF = 'SELF'
+}
+
+export interface Message {
+    message: string;
+    sender: {
+        username: string;
+        reference: string;
+    }
+}
+
+export interface ChatSetMessages {
+    setMessages: React.Dispatch<React.SetStateAction<[Message] | []>>;
 }
 
 interface ChatProps {
-    channel: {
-        name: string;
-    };
-    messages: [Message];
+    chatTargetSelf?: boolean;
 }
 
-const Chat: React.FC = (props): JSX.Element => {
+const Chat: React.FC<ChatProps> = (props): JSX.Element => {
+    const [messages, setMessages] = useState<[Message] | []>([]);
 
     return (
         <div id='chat-box'>
@@ -23,18 +35,10 @@ const Chat: React.FC = (props): JSX.Element => {
             </div>
             <div id='chat-body'>
                 {
-                    // props.messages?.map((message) => (
-                    //     <div className={(message.userId === userId)? 'right': 'left'}> 
-                    //         {
-                    //             (message.userId !== userId)? 
-                    //                 <div className='left'>
-                    //                     {message.username}
-                    //                 </div>
-                    //             : ''
-                    //         }
-                    //         {message.msg}
-                    //     </div>
-                    // ))
+                    props.chatTargetSelf?
+                        <ChatBody messages={messages}/>
+                    :
+                        ''
                 }
                 
                 {/* */}
@@ -48,9 +52,12 @@ const Chat: React.FC = (props): JSX.Element => {
                     </div>
                 </div> */}
             </div>
-            <div id='chat-footer'>
-                <ChatFooter />
-            </div>
+            {
+                props.chatTargetSelf?
+                    <SelfChatFooter setMessages={setMessages} />
+                :
+                    ''
+            }
         </div>
     );
 };

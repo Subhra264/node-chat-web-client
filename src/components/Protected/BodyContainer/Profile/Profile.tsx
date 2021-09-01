@@ -8,7 +8,7 @@ const Profile: React.FC = (): JSX.Element => {
         <div id='chat-body-container'>
             {/* TODO: provide a proper props for the GroupList component */}
             <FriendList />
-            <Chat />
+            <Chat chatTargetSelf={true} />
             <ProfileDetails />
         </div>
     );
