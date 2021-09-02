@@ -1,6 +1,7 @@
 import useUserSelector from "../../../../../hooks/useUserSelector";
 import { User } from "../../../../../utils/reducers/User.reducer";
 import { Message } from "../Chat";
+import './ChatBody.scss';
 
 export interface ChatBodyProps {
     messages: [Message] | [];
@@ -22,14 +23,14 @@ const RightMessage: React.FC<Message> = (props): JSX.Element => {
         <div className="right">
             {props.message}
         </div>
-    )
-}
+    );
+};
 
 const ChatBody: React.FC<ChatBodyProps> = (props): JSX.Element => {
     const user: User = useUserSelector();
 
     return (
-        <>
+        <div className='chat-body'>
             {
                 props.messages.map((message: Message) => (
                     <>
@@ -45,7 +46,7 @@ const ChatBody: React.FC<ChatBodyProps> = (props): JSX.Element => {
                     </>
                 ))
             }
-        </>
+        </div>
     );
 };
 

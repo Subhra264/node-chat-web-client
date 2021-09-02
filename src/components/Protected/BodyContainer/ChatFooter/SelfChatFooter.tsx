@@ -7,7 +7,7 @@ const SelfChatFooter: React.FC<SelfChatFooter> = (props) => {
 
     return (
         <ChatFooter 
-            fetchURI='/api/profile/message'
+            fetchURI='/api/profile/messages'
             setMessages={props.setMessages}
         />
     );

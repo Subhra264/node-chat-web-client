@@ -1,5 +1,4 @@
-import Chat from '../Chat/Chat';
-import GroupList from '../GroupList/GroupList';
+import Chat, { ChatTarget } from '../Chat/Chat';
 import FriendList from '../MemberList/FriendList';
 import ProfileDetails from './ProfileDetails';
 
@@ -8,7 +7,7 @@ const Profile: React.FC = (): JSX.Element => {
         <div id='chat-body-container'>
             {/* TODO: provide a proper props for the GroupList component */}
             <FriendList />
-            <Chat chatTargetSelf={true} />
+            <Chat chatTarget={ChatTarget.SELF} />
             <ProfileDetails />
         </div>
     );
