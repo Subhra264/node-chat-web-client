@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useContext, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
@@ -16,14 +16,10 @@ export interface ChatFooterProps extends ChatSetMessages{
 const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Element => {
     const [message, setMessage] = useState('');
     const [placeholder, setPlaceholder] = useState('Type here...');
-    const chatBodyRef: React.MutableRefObject<HTMLElement | null> = useRef<HTMLElement | null>(null);
+    // const chatBodyRef: React.MutableRefObject<HTMLElement | null> = useRef<HTMLElement | null>(null);
     // const socket = useContext(SocketContext);
     const accessToken: string = useAccessToken();
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        chatBodyRef.current = document.getElementById('chat-body');
-    }, []);
 
     const onChange: ChangeEventHandler<HTMLTextAreaElement> = (ev: ChangeEvent<HTMLTextAreaElement>) => {
         setMessage(ev.target.value);
@@ -39,6 +35,7 @@ const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Elem
 
         const successHandler = (result: any) => {
             // Do something here...
+            console.log('Message sent: ', result);
         };
 
         const errorHandler = (err: Error) => {
@@ -46,7 +43,6 @@ const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Elem
         };
 
         const fetchDetails: FetchDetails = {
-            // fetchURI: '/api/group/text-channel/message',
             fetchURI: props.fetchURI,
             method: 'POST',
             body: {

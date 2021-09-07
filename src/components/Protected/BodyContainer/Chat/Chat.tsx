@@ -57,16 +57,17 @@ const Chat: React.FC<GroupChatProps | SelfChatProps> = (props): JSX.Element => {
             const { groupId, channelId } = props as GroupChatProps;
             fetchURI = `/api/group/text-channel/messages/${groupId}/${channelId}`;
         } else {
-            
+            // TODO: define fetchURI for ChatTarget.FRIEND
         }
 
+        // Makes GET request to get the messages
         getRequest(
             fetchURI,
             accessToken,
             successHandler,
             errorHandler
         );
-    }, []);
+    }, [accessToken]);
 
     return (
         <div className='chat-box'>
