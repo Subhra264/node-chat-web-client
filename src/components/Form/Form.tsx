@@ -38,6 +38,7 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
                 {inputElems}
                 <input type='submit' value='Submit' id='submit-button' onClick={props.onSubmit}/>
             </form>
+            { props.children }
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { authenticate } from '../../utils/fetch-requests';
 import AuthenticationForm, { AuthenticationFormProps } from '../Form/AuthenticationForm';
 
@@ -62,7 +62,11 @@ const SignUp: React.FC = (): JSX.Element => {
     return (
         <div className='form-container sign-up'>
             <div className='form-title'>Sign Up</div>
-            <AuthenticationForm {...formProps} />
+            <AuthenticationForm {...formProps} >
+                <div className="form-footer">
+                    Already have an account? <Link to='/log-in'>Log In</Link>
+                </div>
+            </AuthenticationForm>
         </div>
     );
 };

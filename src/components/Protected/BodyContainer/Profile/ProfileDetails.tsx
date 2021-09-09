@@ -2,7 +2,7 @@ import './ProfileDetails.scss';
 
 const ProfileDetails: React.FC = (props): JSX.Element => {
     return (
-        <div id='profile-details'>
+        <div className='profile-details'>
             <div className='profilePic'>
                 Profile Pic
             </div>

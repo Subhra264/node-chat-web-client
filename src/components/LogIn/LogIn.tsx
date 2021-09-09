@@ -3,7 +3,7 @@ import { authenticate } from '../../utils/fetch-requests';
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { manageUser } from "../../utils/actions/User.actions";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 import AuthenticationForm, { AuthenticationFormProps } from "../Form/AuthenticationForm";
 
@@ -53,7 +53,7 @@ const LogIn: React.FC = (): JSX.Element => {
             history.push(redirectTo);
 
         } catch(err) {
-            console.log('Error while login:', err.message);
+            console.log('Error while login:', (err as Error).message);
         }
 
     };
@@ -83,7 +83,11 @@ const LogIn: React.FC = (): JSX.Element => {
     return (
         <div className='form-container log-in'>
             <div className='form-title'>Log In</div>
-            <AuthenticationForm {...formProps} />
+            <AuthenticationForm {...formProps} >
+                <div className="form-footer">
+                    Don't have an account? <Link to='/sign-up'>Sign Up</Link>
+                </div>
+            </AuthenticationForm>
         </div>
     );
 };
