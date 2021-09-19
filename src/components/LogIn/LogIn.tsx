@@ -11,6 +11,7 @@ const LogIn: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
     const dispatch: Dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -54,6 +55,7 @@ const LogIn: React.FC = (): JSX.Element => {
 
         } catch(err) {
             console.log('Error while login:', (err as Error).message);
+            setError((err as Error).message);
         }
 
     };
@@ -77,7 +79,8 @@ const LogIn: React.FC = (): JSX.Element => {
             }
         },
         onSubmit: logIn,
-        redirectTo: locationState?.redirectTo? locationState.redirectTo : '/profile/@me'
+        redirectTo: locationState?.redirectTo? locationState.redirectTo : '/profile/@me',
+        error
     };
 
     return (

@@ -19,6 +19,7 @@ const GroupList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
     const [newGroupName, setNewGroupName] = useState('');
     const [fetchedGroupList, setFetchedGroupList] = useState<Group[]>([]);
+    const [error, setError] = useState('');
     const user: User = useUserSelector();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -49,6 +50,7 @@ const GroupList: React.FC = (props): JSX.Element => {
 
         const errorHandler = (err: Error) => {
             console.log('Error creating new Group', err.message);
+            setError(err.message);
         };
 
         const fetchDetails: FetchDetails = {
@@ -80,7 +82,8 @@ const GroupList: React.FC = (props): JSX.Element => {
                 onChange: onGroupNameChange
             }
         },
-        onSubmit: createGroup
+        onSubmit: createGroup,
+        error
     };
 
     // Fetches the list of groups, the user is part of

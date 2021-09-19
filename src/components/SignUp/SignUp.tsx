@@ -4,9 +4,10 @@ import { authenticate } from '../../utils/fetch-requests';
 import AuthenticationForm, { AuthenticationFormProps } from '../Form/AuthenticationForm';
 
 const SignUp: React.FC = (): JSX.Element => {
-    const[username, setUsername] = useState('');
-    const[password, setPassword] = useState('');
-    const[email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
     const history = useHistory();
     
     const changeUsername: React.ChangeEventHandler = (ev: React.ChangeEvent) => {
@@ -34,6 +35,7 @@ const SignUp: React.FC = (): JSX.Element => {
             history.push('/log-in');
         } catch(err) {
             console.log(err);
+            setError((err as Error).message);
         }
     };
 
@@ -56,7 +58,8 @@ const SignUp: React.FC = (): JSX.Element => {
             }
         },
         onSubmit: signUp,
-        redirectTo: '/profile/@me'
+        redirectTo: '/profile/@me', 
+        error
     };
 
     return (

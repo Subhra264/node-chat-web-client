@@ -19,6 +19,7 @@ export interface FormProps {
     fields: FormInputProps;
     onSubmit: React.MouseEventHandler<HTMLInputElement>;
     children?: JSX.Element;
+    error: string;
 }
 
 const Form: React.FC<FormProps> = (props): JSX.Element => {
@@ -36,6 +37,9 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
         <div className='form'>
             <form>
                 {inputElems}
+                <div className={`form-error ${props.error? '' : 'display-none'}`}>
+                    {props.error}
+                </div>
                 <input type='submit' value='Submit' id='submit-button' onClick={props.onSubmit}/>
             </form>
             { props.children }

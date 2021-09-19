@@ -49,6 +49,7 @@ const ChannelList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
     const [channelList, setChannelList] = useState<Channel[]>([]);
     const [newChannelName, setNewChannelName] = useState('');
+    const [error, setError] = useState('');
     const groupContext: GroupContextValue = useContext(GroupContext);
     const accessToken = useAccessToken();
     const dispatch = useDispatch();
@@ -79,6 +80,7 @@ const ChannelList: React.FC = (props): JSX.Element => {
 
         const errorHandler = (err: Error) => {
             console.log('Error creating a new channel', err.message);
+            setError(err.message);
         };
 
         const fetchDetails: FetchDetails = {
@@ -130,7 +132,8 @@ const ChannelList: React.FC = (props): JSX.Element => {
                 onChange: onChannelNameChange
             }
         },
-        onSubmit: createTextChannel
+        onSubmit: createTextChannel, 
+        error
     };
 
     return (
