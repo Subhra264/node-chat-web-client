@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { authenticate } from '../../utils/fetch-requests';
+import ResponseError from '../../utils/ResponseError';
 import AuthenticationForm, { AuthenticationFormProps } from '../Form/AuthenticationForm';
 
 const SignUp: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<ResponseError>();
     const history = useHistory();
     
     const changeUsername: React.ChangeEventHandler = (ev: React.ChangeEvent) => {
@@ -35,7 +36,7 @@ const SignUp: React.FC = (): JSX.Element => {
             history.push('/log-in');
         } catch(err) {
             console.log(err);
-            setError((err as Error).message);
+            setError(err as ResponseError);
         }
     };
 

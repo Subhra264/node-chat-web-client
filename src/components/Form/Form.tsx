@@ -1,4 +1,6 @@
 import React from 'react';
+import ResponseError from '../../utils/ResponseError';
+import Error, { ErrorProps } from '../Error/Error';
 import './Form.scss';
 
 interface InputField {
@@ -15,12 +17,13 @@ interface FormInputProps {
     [field: string]: InputField;
 }
 
-export interface FormProps {
+interface FormProps_ {
     fields: FormInputProps;
     onSubmit: React.MouseEventHandler<HTMLInputElement>;
     children?: JSX.Element;
-    error: string;
 }
+
+export type FormProps = FormProps_ & ErrorProps;
 
 const Form: React.FC<FormProps> = (props): JSX.Element => {
     const inputElems: JSX.Element[] = [];
@@ -37,9 +40,7 @@ const Form: React.FC<FormProps> = (props): JSX.Element => {
         <div className='form'>
             <form>
                 {inputElems}
-                <div className={`error ${props.error? '' : 'display-none'}`}>
-                    {props.error}
-                </div>
+                <Error error={props.error}/>
                 <input type='submit' value='Submit' id='submit-button' onClick={props.onSubmit}/>
             </form>
             { props.children }

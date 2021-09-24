@@ -6,12 +6,13 @@ import { manageUser } from "../../utils/actions/User.actions";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Dispatch } from "redux";
 import AuthenticationForm, { AuthenticationFormProps } from "../Form/AuthenticationForm";
+import ResponseError from "../../utils/ResponseError";
 
 const LogIn: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<ResponseError>();
     const dispatch: Dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -55,7 +56,7 @@ const LogIn: React.FC = (): JSX.Element => {
 
         } catch(err) {
             console.log('Error while login:', (err as Error).message);
-            setError((err as Error).message);
+            setError(err as ResponseError);
         }
 
     };

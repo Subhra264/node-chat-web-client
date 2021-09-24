@@ -14,6 +14,7 @@ import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fe
 import { GroupContext, GroupContextValue } from '../../../../utils/contexts';
 import { useAccessToken } from '../../../../hooks/useUserSelector';
 import { useDispatch } from 'react-redux';
+import ResponseError from '../../../../utils/ResponseError';
 
 enum ChannelType {
     TEXT = 'text',
@@ -49,7 +50,7 @@ const ChannelList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
     const [channelList, setChannelList] = useState<Channel[]>([]);
     const [newChannelName, setNewChannelName] = useState('');
-    const [error, setError] = useState('');
+    const [error, setError] = useState<ResponseError>();
     const groupContext: GroupContextValue = useContext(GroupContext);
     const accessToken = useAccessToken();
     const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const ChannelList: React.FC = (props): JSX.Element => {
 
         const errorHandler = (err: Error) => {
             console.log('Error creating a new channel', err.message);
-            setError(err.message);
+            setError(err as ResponseError);
         };
 
         const fetchDetails: FetchDetails = {

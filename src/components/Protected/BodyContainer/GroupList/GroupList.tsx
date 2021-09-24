@@ -4,6 +4,7 @@ import { Link, useHistory } from 'react-router-dom';
 import useUserSelector from '../../../../hooks/useUserSelector';
 import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
 import { User } from '../../../../utils/reducers/User.reducer';
+import ResponseError from '../../../../utils/ResponseError';
 import { FormProps } from '../../../Form/Form';
 import ModalBox from '../../../ModalBox/ModalBox';
 
@@ -19,7 +20,7 @@ const GroupList: React.FC = (props): JSX.Element => {
     const [show, setShow] = useState(false);
     const [newGroupName, setNewGroupName] = useState('');
     const [fetchedGroupList, setFetchedGroupList] = useState<Group[]>([]);
-    const [error, setError] = useState('');
+    const [error, setError] = useState<ResponseError>();
     const user: User = useUserSelector();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -50,7 +51,7 @@ const GroupList: React.FC = (props): JSX.Element => {
 
         const errorHandler = (err: Error) => {
             console.log('Error creating new Group', err.message);
-            setError(err.message);
+            setError(err as ResponseError);
         };
 
         const fetchDetails: FetchDetails = {

@@ -1,10 +1,14 @@
 import ResponseError from "../../utils/ResponseError";
 import './Error.scss';
 
-const Error: React.FC<ResponseError> = (props: ResponseError) => {
+export interface ErrorProps {
+    error?: ResponseError;
+}
+
+const Error: React.FC<ErrorProps> = (props) => {
     return (
-        <div className={`error ${props? '' : 'display-none'}`}>
-            {props.message}
+        <div className={`error ${props.error? '' : 'display-none'}`}>
+            {props.error?.message}
         </div>
     );
 };
