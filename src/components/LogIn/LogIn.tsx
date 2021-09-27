@@ -40,11 +40,11 @@ const LogIn: React.FC = (): JSX.Element => {
                 password
             });
 
-            // Store the userId and username in the localstorage so that
+            // Store the userId and username in the sessionStorage so that
             // When the user refreshes the page, we can read the userId and the
             // username just to know that the user is already logged in.
-            // The access-token must not be stored in localstorage.
-            localStorage.setItem('user', JSON.stringify({
+            // The access-token must not be stored in sessionStorage.
+            sessionStorage.setItem('user', JSON.stringify({
                 username: result.username,
                 userId: result.userId
             }));

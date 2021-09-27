@@ -27,8 +27,8 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
     const successHandler = (result: User) => {
         console.log('Refresh token successHanlder', result);
 
-        // Update the localStorage
-        localStorage.setItem('user', JSON.stringify({
+        // Update the sessionStorage
+        sessionStorage.setItem('user', JSON.stringify({
             username: result.username,
             userId: result.userId
         }));
@@ -43,7 +43,7 @@ function refreshTokens (retryFetchingWithAccess: (newAccessToken: string) => voi
     const errorHandler = (err: Error) => {
         console.log('Hello from errorHandler fetchRequest', err);
         // Remove all user data from all the stores
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
         dispatch(manageUser(null));
         
         // Call the actual errorHandler

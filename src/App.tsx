@@ -12,8 +12,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (localStorage.getItem('user')) {
-      dispatch(manageUser(JSON.parse(localStorage.getItem('user') as string)));
+    if (sessionStorage.getItem('user')) {
+      dispatch(manageUser(JSON.parse(sessionStorage.getItem('user') as string)));
     }
   }, []);
 

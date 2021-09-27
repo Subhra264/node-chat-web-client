@@ -24,12 +24,6 @@ const Protected: React.FC = () => {
         ];
     } else {
         routes = [
-            // <Route path='/:groupId/channels/:channelId' key='chat-body'>
-            //     <ChatBodyContainer />
-            // </Route>,
-            // <Route path='/profile/@me' key='my-profile'>
-            //     <Profile />
-            // </Route>,
             <Route path={['/:groupId/channels/:channelId', '/profile/@me']} key='chat-body'>
                 <ChatBodyContainer />
             </Route>

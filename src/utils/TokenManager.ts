@@ -11,7 +11,7 @@ export default class TokenManager {
         this.token_ = null;
     }
 
-    public static get tokenManager (): TokenManager {
+    public static get manager (): TokenManager {
         return this.TokenManager_;
     }
 
@@ -45,8 +45,8 @@ export default class TokenManager {
             const successHandler = (result: User) => {
                 console.log('Refresh token successHanlder', result);
         
-                // Update the localStorage
-                localStorage.setItem('user', JSON.stringify({
+                // Update the sessionStorage
+                sessionStorage.setItem('user', JSON.stringify({
                     username: result.username,
                     userId: result.userId
                 }));
@@ -64,7 +64,7 @@ export default class TokenManager {
             const errorHandler = (err: Error) => {
                 console.log('Hello from errorHandler fetchRequest', err);
                 // Remove all user data from all the stores
-                localStorage.removeItem('user');
+                sessionStorage.removeItem('user');
                 // dispatch(manageUser(null));
                 
                 // Call the actual errorHandler
@@ -79,6 +79,6 @@ export default class TokenManager {
                 successHandler,
                 errorHandler
             );
-        })
+        });
     }
 }
