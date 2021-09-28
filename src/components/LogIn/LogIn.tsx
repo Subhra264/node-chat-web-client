@@ -81,6 +81,7 @@ const LogIn: React.FC = (): JSX.Element => {
         },
         onSubmit: logIn,
         redirectTo: locationState?.redirectTo? locationState.redirectTo : '/profile/@me',
+        refreshTokenInvalid: locationState?.refreshTokenInvalid,
         error
     };
 

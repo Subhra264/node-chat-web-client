@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+import { manageUser } from './actions/User.actions';
 import { FetchDetails, protectedRequest } from './fetch-requests';
 import { User } from './reducers/User.reducer';
 
@@ -30,7 +32,7 @@ export default class TokenManager {
         this.token_ = token;
     }
 
-    public get token (): Promise<string> {
+    public getToken (dispatch: Dispatch<any>): Promise<string> {
         return new Promise((resolve, reject) => {
             if (this.token_) return resolve(this.token_);
             
@@ -45,14 +47,16 @@ export default class TokenManager {
             const successHandler = (result: User) => {
                 console.log('Refresh token successHanlder', result);
         
-                // Update the sessionStorage
-                sessionStorage.setItem('user', JSON.stringify({
+                const user = {
                     username: result.username,
                     userId: result.userId
-                }));
+                };
+
+                // Update the sessionStorage
+                sessionStorage.setItem('user', JSON.stringify(user));
         
                 // Update the User store state
-                // dispatch(manageUser(result));
+                dispatch(manageUser(user));
         
                 // Retry fetching the original endpoint with new access token
                 // retryFetchingWithAccess(result.accessToken as string);
@@ -65,11 +69,9 @@ export default class TokenManager {
                 console.log('Hello from errorHandler fetchRequest', err);
                 // Remove all user data from all the stores
                 sessionStorage.removeItem('user');
-                // dispatch(manageUser(null));
+                dispatch(manageUser(null));
                 
-                // Call the actual errorHandler
-                // mainErrorHandler(err);
-
+                // Reject with err
                 reject(err);
             };
 
