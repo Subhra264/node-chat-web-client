@@ -2,6 +2,7 @@ import { Dispatch } from 'react';
 import { manageUser } from './actions/User.actions';
 import { FetchDetails, protectedRequest } from './fetch-requests';
 import { User } from './reducers/User.reducer';
+import store from './store';
 
 // Single-ton pattern for TokenManager so that 
 // only one instance is used throughout the application
@@ -32,55 +33,58 @@ export default class TokenManager {
         this.token_ = token;
     }
 
-    public getToken (dispatch: Dispatch<any>): Promise<string> {
+    public refreshToken (mainSuccessHandler: (newAccessToken: string) => any, mainErrorHandler: (err: Error) => any) {
+        const fetchDetails: FetchDetails = {
+            fetchURI: '/api/auth/refresh-token/',
+            method: 'POST'
+        };
+
+        const successHandler = (result: User) => {
+            console.log('Refresh token successHanlder', result);
+    
+            const user = {
+                username: result.username,
+                userId: result.userId
+            };
+
+            // Update the sessionStorage
+            sessionStorage.setItem('user', JSON.stringify(user));
+    
+            // Update the User store state
+            store.dispatch(manageUser(user));
+
+            // Save the new accessToken and apply the mainSucessHandler
+            this.token_ = result.accessToken as string;
+            mainSuccessHandler(this.token_);
+        };
+
+        const errorHandler = (err: Error) => {
+            console.log('Hello from errorHandler fetchRequest', err);
+            // Remove all user data from all the stores
+            sessionStorage.removeItem('user');
+            store.dispatch(manageUser(null));
+            
+            // Reject with err
+            mainErrorHandler(err);
+        };
+
+        protectedRequest(
+            fetchDetails,
+            '',
+            successHandler,
+            errorHandler
+        );
+    }
+
+    public getToken (dispatch?: Dispatch<any>): Promise<string> {
         return new Promise((resolve, reject) => {
             if (this.token_) return resolve(this.token_);
             
             // TODO: Remember to add time-checker to check if one hour has passed
             // TODO: as access-token will expire after an hour
 
-            const fetchDetails: FetchDetails = {
-                fetchURI: '/api/auth/refresh-token/',
-                method: 'POST'
-            };
-
-            const successHandler = (result: User) => {
-                console.log('Refresh token successHanlder', result);
-        
-                const user = {
-                    username: result.username,
-                    userId: result.userId
-                };
-
-                // Update the sessionStorage
-                sessionStorage.setItem('user', JSON.stringify(user));
-        
-                // Update the User store state
-                dispatch(manageUser(user));
-        
-                // Retry fetching the original endpoint with new access token
-                // retryFetchingWithAccess(result.accessToken as string);
-
-                this.token_ = result.accessToken as string;
-                resolve(this.token_);
-            };
-
-            const errorHandler = (err: Error) => {
-                console.log('Hello from errorHandler fetchRequest', err);
-                // Remove all user data from all the stores
-                sessionStorage.removeItem('user');
-                dispatch(manageUser(null));
-                
-                // Reject with err
-                reject(err);
-            };
-
-            protectedRequest(
-                fetchDetails,
-                '',
-                successHandler,
-                errorHandler
-            );
+            // Refresh the access-token and save it
+            this.refreshToken(resolve, reject);
         });
     }
 }

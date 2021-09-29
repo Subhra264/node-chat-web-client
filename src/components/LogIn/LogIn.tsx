@@ -1,12 +1,13 @@
-import { FormProps } from "../Form/Form";
 import { authenticate } from '../../utils/fetch-requests';
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { manageUser } from "../../utils/actions/User.actions";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { Dispatch } from "redux";
-import AuthenticationForm, { AuthenticationFormProps } from "../Form/AuthenticationForm";
-import ResponseError from "../../utils/ResponseError";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { manageUser } from '../../utils/actions/User.actions';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import AuthenticationForm, { AuthenticationFormProps } from '../Form/AuthenticationForm';
+import ResponseError from '../../utils/ResponseError';
+import TokenManager from '../../utils/TokenManager';
+import { User } from '../../utils/reducers/User.reducer';
 
 const LogIn: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
@@ -34,21 +35,26 @@ const LogIn: React.FC = (): JSX.Element => {
         
         try {
             ev.preventDefault();
-            const result = await authenticate('signin', {
+            const result: User = await authenticate('signin', {
                 username,
                 email,
                 password
             });
 
+            const user = {
+                username: result.username,
+                userId: result.userId
+            };
+
             // Store the userId and username in the sessionStorage so that
             // When the user refreshes the page, we can read the userId and the
             // username just to know that the user is already logged in.
             // The access-token must not be stored in sessionStorage.
-            sessionStorage.setItem('user', JSON.stringify({
-                username: result.username,
-                userId: result.userId
-            }));
-            dispatch(manageUser(result));
+            sessionStorage.setItem('user', JSON.stringify(user));
+
+            // Save the token in TokenManager
+            TokenManager.manager.saveToken(result.accessToken as string);
+            dispatch(manageUser(user));
 
             // Get the redirectTo query if available
             const redirectTo = locationState?.redirectTo? locationState.redirectTo : '/profile/@me';

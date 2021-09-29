@@ -4,11 +4,11 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { createStore, Store } from 'redux';
+// import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
-import reducer from './utils/reducers/reducer';
-
-const store: Store = createStore(reducer);
+// import reducer from './utils/reducers/reducer';
+import store from './utils/store';
+// const store: Store = createStore(reducer);
 
 ReactDOM.render(
   <React.StrictMode>

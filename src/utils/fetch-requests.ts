@@ -2,6 +2,7 @@ import { Dispatch } from "react";
 import { manageUser } from "./actions/User.actions";
 import { User } from "./reducers/User.reducer";
 import ResponseError, { ResponseErrorJSON } from "./ResponseError";
+import TokenManager from "./TokenManager";
 
 interface APIResponseBody {
     type: string;
@@ -100,35 +101,43 @@ export async function authenticate(authUri: string, reqBody: any) {
  * @param dispatch Though not mandatory, but must be provided to refresh tokens automatically
  */
 export function getRequest (getURI: string, accessToken: string, successHandler: Function, errorHandler: (err: Error) => any, dispatch?: Dispatch<any>) {
-    // Make a GET request to the given getURI
-    fetch(getURI, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        }
-    })
-    .then((res) => (
-        res.json()
-    ))
-    .then((result: APIResponseBody) => {
-        console.log('Fetch result', result);
-        if (result.type === 'error') {
-            if (result.message.message === 'token_not_valid' && dispatch) {
-                return refreshTokens((newAccessToken: string) => (
-                    // We don't need to pass the dispatch function here
-                    // as we need to refresh the token only once
-                    getRequest(getURI, newAccessToken, successHandler, errorHandler)
-                ), dispatch, errorHandler);
-            } else {
-                throw new ResponseError(result.message as ResponseErrorJSON);
-            }
-        }
+    TokenManager.manager.getToken().then(accessToken => {
 
-        successHandler(result.message);
+        // Make a GET request to the given getURI
+        fetch(getURI, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then((res) => (
+            res.json()
+        ))
+        .then((result: APIResponseBody) => {
+            console.log('Fetch result', result);
+            if (result.type === 'error') {
+                // TODO: Fix refreshToken logic below
+                if (result.message.message === 'token_not_valid' && dispatch) {
+                    return TokenManager.manager.refreshToken((newAccessToken: string) => (
+                        // We don't need to pass the dispatch function here
+                        // as we need to refresh the token only once
+                        getRequest(getURI, newAccessToken, successHandler, errorHandler)
+                    ), errorHandler);
+                } else {
+                    throw new ResponseError(result.message as ResponseErrorJSON);
+                }
+            }
+    
+            successHandler(result.message);
+        })
+        .catch((err: Error) => {
+            throw err;
+        });
     })
     .catch((err: Error) => {
         errorHandler(err);
     });
+    
 }
 
 
@@ -143,31 +152,38 @@ export function getRequest (getURI: string, accessToken: string, successHandler:
  */
 export function protectedRequest (fetchDetails: FetchDetails, accessToken: string, successHandler: Function, errorHandler: (err: Error) => any, dispatch?: Dispatch<any>) {
     
-    fetch(fetchDetails.fetchURI, {
-        method: fetchDetails.method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        },
-        body: JSON.stringify(fetchDetails.body)
-    })
-    .then(res => (
-        res.json()
-    ))
-    .then(result => {
-        console.log('Fetch result', result);
-        if (result.type === 'error') {
-            if (result.message.message === 'token_not_valid' && dispatch) {
-                // We don't need to pass dispatch function second time
-                return refreshTokens((newAccessToken: string) => (
-                    protectedRequest(fetchDetails, newAccessToken, successHandler, errorHandler)
-                ), dispatch, errorHandler);
-            } else {
-                throw new ResponseError(result.message as ResponseErrorJSON);
-            }
-        }
+    TokenManager.manager.getToken().then(accessToken => {
 
-        successHandler(result.message);
+        fetch(fetchDetails.fetchURI, {
+            method: fetchDetails.method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(fetchDetails.body)
+        })
+        .then(res => (
+            res.json()
+        ))
+        .then(result => {
+            console.log('Fetch result', result);
+            if (result.type === 'error') {
+                // TODO: Fix refreshTokens logic below
+                if (result.message.message === 'token_not_valid' && dispatch) {
+                    // We don't need to pass dispatch function second time
+                    return refreshTokens((newAccessToken: string) => (
+                        protectedRequest(fetchDetails, newAccessToken, successHandler, errorHandler)
+                    ), dispatch, errorHandler);
+                } else {
+                    throw new ResponseError(result.message as ResponseErrorJSON);
+                }
+            }
+    
+            successHandler(result.message);
+        })
+        .catch((err: Error) => {
+            throw err;
+        });
     })
     .catch((err: Error) => {
         errorHandler(err);
