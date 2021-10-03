@@ -7,13 +7,14 @@ import Protected from './components/Protected/Protected';
 import NotFound from './components/NotFound/NotFound';
 import { manageUser } from './utils/actions/User.actions';
 import { useDispatch } from 'react-redux';
+import { SSK_USER } from './utils/storage-items';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (sessionStorage.getItem('user')) {
-      dispatch(manageUser(JSON.parse(sessionStorage.getItem('user') as string)));
+    if (sessionStorage.getItem(SSK_USER)) {
+      dispatch(manageUser(JSON.parse(sessionStorage.getItem(SSK_USER) as string)));
     }
   }, []);
 

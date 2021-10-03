@@ -8,6 +8,7 @@ import AuthenticationForm, { AuthenticationFormProps } from '../Form/Authenticat
 import ResponseError from '../../utils/ResponseError';
 import TokenManager from '../../utils/TokenManager';
 import { User } from '../../utils/reducers/User.reducer';
+import { SSK_REFRESH_TOKEN_INVALID, SSK_USER } from '../../utils/storage-items';
 
 const LogIn: React.FC = (): JSX.Element => {
     const [username, setUsername] = useState('');
@@ -50,7 +51,8 @@ const LogIn: React.FC = (): JSX.Element => {
             // When the user refreshes the page, we can read the userId and the
             // username just to know that the user is already logged in.
             // The access-token must not be stored in sessionStorage.
-            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem(SSK_USER, JSON.stringify(user));
+            sessionStorage.removeItem(SSK_REFRESH_TOKEN_INVALID);
 
             // Save the token in TokenManager
             TokenManager.manager.saveToken(result.accessToken as string);
@@ -87,7 +89,6 @@ const LogIn: React.FC = (): JSX.Element => {
         },
         onSubmit: logIn,
         redirectTo: locationState?.redirectTo? locationState.redirectTo : '/profile/@me',
-        refreshTokenInvalid: locationState?.refreshTokenInvalid,
         error
     };
 
