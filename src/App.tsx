@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './App.scss';
 import { Switch, Route } from 'react-router-dom';
 import LogIn from './components/LogIn/LogIn';

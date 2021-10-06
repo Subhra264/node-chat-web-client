@@ -8,7 +8,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 // import reducer from './utils/reducers/reducer';
 import store from './utils/store';
+import TokenManager from './utils/TokenManager';
 // const store: Store = createStore(reducer);
+
+// Instantiate the TokenManager
+TokenManager.activate();
 
 ReactDOM.render(
   <React.StrictMode>
