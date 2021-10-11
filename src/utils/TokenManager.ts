@@ -9,11 +9,18 @@ import {
     SSK_USER
 } from './storage-items';
 
+interface RegisteredRequest {
+    resolve: Function;
+    reject: (err: Error) => any;
+}
+
 // Single-ton pattern for TokenManager so that 
 // only one instance is used throughout the application
 export default class TokenManager {
     private static TokenManager_: TokenManager;
     private token_: string | null;
+    private static busyFetching: boolean = false;
+    private static registeredRequests: RegisteredRequest[] = [];
 
     private constructor () {
         this.token_ = null;
@@ -36,9 +43,28 @@ export default class TokenManager {
 
     public saveToken (token: string) {
         this.token_ = token;
+        TokenManager.busyFetching = false;
+        while (TokenManager.registeredRequests.length) {
+            const { resolve } = TokenManager.registeredRequests.pop() as RegisteredRequest;
+
+            resolve(token);
+        }
     }
 
-    public refreshToken (mainSuccessHandler: (newAccessToken: string) => any, mainErrorHandler: (err: Error) => any) {
+    private rejectRequests (err: Error) {
+        TokenManager.busyFetching = false;
+        while (TokenManager.registeredRequests.length) {
+            const { reject } = TokenManager.registeredRequests.pop() as RegisteredRequest;
+
+            reject(err);
+        }
+    }
+
+    private registerRequest (requestToRegister: RegisteredRequest) {
+        TokenManager.registeredRequests.push(requestToRegister);
+    }
+
+    public refreshToken () {
         const fetchDetails: FetchDetails = {
             fetchURI: '/api/auth/refresh-token/',
             method: 'POST'
@@ -59,8 +85,8 @@ export default class TokenManager {
             store.dispatch(manageUser(user));
 
             // Save the new accessToken and apply the mainSucessHandler
-            this.token_ = result.accessToken as string;
-            mainSuccessHandler(this.token_);
+            this.saveToken(result.accessToken as string);
+            // mainSuccessHandler(this.token_);
         };
 
         const errorHandler = (err: Error) => {
@@ -76,7 +102,8 @@ export default class TokenManager {
             store.dispatch(manageUser(null));
             
             // Reject with err
-            mainErrorHandler(err);
+            // mainErrorHandler(err);
+            this.rejectRequests(err);
         };
 
         protectedRequest(
@@ -93,8 +120,19 @@ export default class TokenManager {
             // TODO: Remember to add time-checker to check if one hour has passed
             // TODO: as access-token will expire after an hour
 
-            // Refresh the access-token and save it
-            this.refreshToken(resolve, reject);
+            this.registerRequest({ resolve, reject });
+
+            // If the TokenManager is not already busy fetching the new access token
+            // then only try refreshing the token. This flag is just to ensure that
+            // the TokenManager makes only one POST request to /refresh-token even if
+            // multiple react components ask for the access token from Token Manager
+            // in a very short time-span.
+            if (!TokenManager.busyFetching) {
+                TokenManager.busyFetching = true;
+                // Refresh the access-token and save it
+                this.refreshToken();
+            }
+
         });
     }
 }

@@ -65,11 +65,7 @@ export function getRequest (getURI: string, successHandler: Function, errorHandl
             if (result.type === 'error') {
                 // TODO: Fix refreshToken logic below
                 if (result.message.message === 'token_not_valid') {
-                    return TokenManager.manager.refreshToken((newAccessToken: string) => (
-                        // We don't need to pass the dispatch function here
-                        // as we need to refresh the token only once
-                        getRequest(getURI, successHandler, errorHandler)
-                    ), errorHandler);
+                    
                 } else {
                     throw new ResponseError(result.message as ResponseErrorJSON);
                 }
