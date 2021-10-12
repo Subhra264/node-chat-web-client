@@ -19,8 +19,8 @@ interface RegisteredRequest {
 export default class TokenManager {
     private static TokenManager_: TokenManager;
     private token_: string | null;
-    private static busyFetching: boolean = false;
-    private static registeredRequests: RegisteredRequest[] = [];
+    private busyFetching: boolean = false;
+    private registeredRequests: RegisteredRequest[] = [];
 
     private constructor () {
         this.token_ = null;
@@ -43,25 +43,25 @@ export default class TokenManager {
 
     public saveToken (token: string) {
         this.token_ = token;
-        TokenManager.busyFetching = false;
-        while (TokenManager.registeredRequests.length) {
-            const { resolve } = TokenManager.registeredRequests.pop() as RegisteredRequest;
+        this.busyFetching = false;
+        while (this.registeredRequests.length) {
+            const { resolve } = this.registeredRequests.pop() as RegisteredRequest;
 
             resolve(token);
         }
     }
 
     private rejectRequests (err: Error) {
-        TokenManager.busyFetching = false;
-        while (TokenManager.registeredRequests.length) {
-            const { reject } = TokenManager.registeredRequests.pop() as RegisteredRequest;
+        this.busyFetching = false;
+        while (this.registeredRequests.length) {
+            const { reject } = this.registeredRequests.pop() as RegisteredRequest;
 
             reject(err);
         }
     }
 
     private registerRequest (requestToRegister: RegisteredRequest) {
-        TokenManager.registeredRequests.push(requestToRegister);
+        this.registeredRequests.push(requestToRegister);
     }
 
     public refreshToken () {
@@ -127,8 +127,8 @@ export default class TokenManager {
             // the TokenManager makes only one POST request to /refresh-token even if
             // multiple react components ask for the access token from Token Manager
             // in a very short time-span.
-            if (!TokenManager.busyFetching) {
-                TokenManager.busyFetching = true;
+            if (!this.busyFetching) {
+                this.busyFetching = true;
                 // Refresh the access-token and save it
                 this.refreshToken();
             }
