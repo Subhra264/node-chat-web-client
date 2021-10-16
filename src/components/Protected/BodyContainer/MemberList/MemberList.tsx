@@ -1,7 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAccessToken } from "../../../../hooks/useUserSelector";
 import { getRequest } from "../../../../utils/fetch-requests";
 
 interface Member {
@@ -17,8 +15,6 @@ interface MemberListProps {
 
 const MemberList: React.FC<MemberListProps> = (props: MemberListProps): JSX.Element => {
     const [memberList, setMemberList] = useState<Member[]>([]);
-    const accessToken = useAccessToken();
-    const dispatch = useDispatch();
 
     useEffect(() => {
         const successHandler = (result: any) => {
@@ -32,10 +28,8 @@ const MemberList: React.FC<MemberListProps> = (props: MemberListProps): JSX.Elem
         // fetches the list of members in the group
         getRequest(
             props.fetchURI,
-            accessToken,
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
     }, [...props.effectDeps]);
 

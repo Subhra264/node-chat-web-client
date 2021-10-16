@@ -1,8 +1,6 @@
-import { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useState } from 'react';
 import { Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-import { useAccessToken } from '../../../../hooks/useUserSelector';
 // import { SocketContext } from '../../../../utils/contexts';
 import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
 import { ChatSetMessages, Message } from '../Chat/Chat';
@@ -18,8 +16,6 @@ const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Elem
     const [placeholder, setPlaceholder] = useState('Type here...');
     // const chatBodyRef: React.MutableRefObject<HTMLElement | null> = useRef<HTMLElement | null>(null);
     // const socket = useContext(SocketContext);
-    const accessToken: string = useAccessToken();
-    const dispatch = useDispatch();
 
     const onChange: ChangeEventHandler<HTMLTextAreaElement> = (ev: ChangeEvent<HTMLTextAreaElement>) => {
         setMessage(ev.target.value);
@@ -53,10 +49,8 @@ const ChatFooter: React.FC<ChatFooterProps> = (props: ChatFooterProps): JSX.Elem
         // Makes POST request to save message
         protectedRequest(
             fetchDetails,
-            accessToken,
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
 
         // In this case, as the user himself sending the message, 

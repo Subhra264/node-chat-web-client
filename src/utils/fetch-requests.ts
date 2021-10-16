@@ -1,6 +1,3 @@
-import { Dispatch } from "react";
-import { manageUser } from "./actions/User.actions";
-import { User } from "./reducers/User.reducer";
 import ResponseError, { ResponseErrorJSON } from "./ResponseError";
 import TokenManager from "./TokenManager";
 
@@ -64,11 +61,7 @@ export function getRequest (getURI: string, successHandler: Function, errorHandl
             console.log('Fetch result', result);
             if (result.type === 'error') {
                 // TODO: Fix refreshToken logic below
-                if (result.message.message === 'token_not_valid') {
-                    
-                } else {
-                    throw new ResponseError(result.message as ResponseErrorJSON);
-                }
+                throw new ResponseError(result.message as ResponseErrorJSON);
             }
     
             successHandler(result.message);
@@ -88,10 +81,8 @@ export function getRequest (getURI: string, successHandler: Function, errorHandl
  * Makes request to the given protected endpoint
  * 
  * @param fetchDetails Contains all the details for fetch request
- * @param accessToken The access token for authentication
  * @param successHandler Function to call after success
  * @param errorHandler Function to call when an error occurs
- * @param dispatch Though not mandatory, but must be provided to refresh tokens automatically
  */
 export function protectedRequest (fetchDetails: FetchDetails, successHandler: Function, errorHandler: (err: Error) => any) {
     
@@ -122,12 +113,7 @@ export function protectedRequest (fetchDetails: FetchDetails, successHandler: Fu
             console.log('Fetch result', result);
             if (result.type === 'error') {
                 // TODO: Fix refreshTokens logic below
-                if (result.message.message === 'token_not_valid') {
-                    // We don't need to pass dispatch function second time
-                    
-                } else {
-                    throw new ResponseError(result.message as ResponseErrorJSON);
-                }
+                throw new ResponseError(result.message as ResponseErrorJSON);
             }
     
             successHandler(result.message);

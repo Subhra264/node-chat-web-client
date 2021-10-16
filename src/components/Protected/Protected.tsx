@@ -5,6 +5,7 @@ import ChatBodyContainer from './BodyContainer/ChatBodyContainer/ChatBodyContain
 
 const Protected: React.FC = () => {
     const isAuthenticated = useUserSelector();
+    console.log('Protected component isAuthenticated?', isAuthenticated);
     const location = useLocation();
 
     let routes: JSX.Element[];

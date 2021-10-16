@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAccessToken } from '../../../../hooks/useUserSelector';
 import { getRequest } from '../../../../utils/fetch-requests';
 import SelfChatFooter from '../ChatFooter/SelfChatFooter';
 import './Chat.scss';
@@ -39,7 +38,6 @@ interface GroupChatProps extends ChatProps{
 
 const Chat: React.FC<GroupChatProps | SelfChatProps> = (props): JSX.Element => {
     const [messages, setMessages] = useState<[Message] | []>([]);
-    const accessToken: string = useAccessToken();
     
     useEffect(() => {
         const successHandler = (result: [Message]) => {
@@ -63,11 +61,10 @@ const Chat: React.FC<GroupChatProps | SelfChatProps> = (props): JSX.Element => {
         // Makes GET request to get the messages
         getRequest(
             fetchURI,
-            accessToken,
             successHandler,
             errorHandler
         );
-    }, [accessToken]);
+    }, []);
 
     return (
         <div className='chat-box'>

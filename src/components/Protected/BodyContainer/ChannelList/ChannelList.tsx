@@ -12,8 +12,6 @@ import ModalBox from '../../../ModalBox/ModalBox';
 import { FormProps } from '../../../Form/Form';
 import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
 import { GroupContext, GroupContextValue } from '../../../../utils/contexts';
-import { useAccessToken } from '../../../../hooks/useUserSelector';
-import { useDispatch } from 'react-redux';
 import ResponseError from '../../../../utils/ResponseError';
 
 enum ChannelType {
@@ -37,13 +35,13 @@ interface TextChannel extends Channel {
     type: ChannelType.TEXT;
 }
 
-export interface ChannelList {
+export interface IChannelList {
     textChannels: [TextChannel] | undefined;
     voiceChannels: [VoiceChannel] | undefined;
 }
 
 interface ChannelListProps {
-    channels: ChannelList | undefined;
+    channels: IChannelList | undefined;
 }
 
 const ChannelList: React.FC = (props): JSX.Element => {
@@ -52,8 +50,6 @@ const ChannelList: React.FC = (props): JSX.Element => {
     const [newChannelName, setNewChannelName] = useState('');
     const [error, setError] = useState<ResponseError>();
     const groupContext: GroupContextValue = useContext(GroupContext);
-    const accessToken = useAccessToken();
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const onChannelNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -96,10 +92,8 @@ const ChannelList: React.FC = (props): JSX.Element => {
         // Makes POST request to /api/group/text-channel endpoint
         protectedRequest(
             fetchDetails,
-            accessToken,
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
     };
 
@@ -116,10 +110,8 @@ const ChannelList: React.FC = (props): JSX.Element => {
         // Fetches the list of channels in the group
         getRequest(
             `/api/groups/${groupContext.groupId}/channels`,
-            accessToken,
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
     }, [groupContext.groupId]);
 

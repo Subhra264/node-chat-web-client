@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Form, { FormProps } from "../Form/Form";
 import './ModalBox.scss';
 

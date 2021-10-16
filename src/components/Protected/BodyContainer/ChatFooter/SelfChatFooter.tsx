@@ -1,9 +1,9 @@
-import { ChatSetMessages, Message } from '../Chat/Chat';
+import { ChatSetMessages } from '../Chat/Chat';
 import ChatFooter from './ChatFooter';
 
-interface SelfChatFooter extends ChatSetMessages {}
+interface SelfChatFooterProps extends ChatSetMessages {}
 
-const SelfChatFooter: React.FC<SelfChatFooter> = (props) => {
+const SelfChatFooter: React.FC<SelfChatFooterProps> = (props) => {
 
     return (
         <ChatFooter 

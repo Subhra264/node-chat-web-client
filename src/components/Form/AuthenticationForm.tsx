@@ -11,6 +11,7 @@ export interface AuthenticationFormProps extends FormProps{
 
 const AuthenticationForm: React.FC<AuthenticationFormProps>  = (props: AuthenticationFormProps) => {
     const isAuthenticated = useUserSelector();
+    console.log('AuthenticationForm component, isAuthenticated?', isAuthenticated);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {

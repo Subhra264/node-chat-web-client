@@ -1,9 +1,6 @@
 import { MouseEventHandler, MouseEvent, useState, ChangeEvent, ChangeEventHandler, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import useUserSelector from '../../../../hooks/useUserSelector';
 import { FetchDetails, getRequest, protectedRequest } from '../../../../utils/fetch-requests';
-import { User } from '../../../../utils/reducers/User.reducer';
 import ResponseError from '../../../../utils/ResponseError';
 import { FormProps } from '../../../Form/Form';
 import ModalBox from '../../../ModalBox/ModalBox';
@@ -21,8 +18,6 @@ const GroupList: React.FC = (props): JSX.Element => {
     const [newGroupName, setNewGroupName] = useState('');
     const [fetchedGroupList, setFetchedGroupList] = useState<Group[]>([]);
     const [error, setError] = useState<ResponseError>();
-    const user: User = useUserSelector();
-    const dispatch = useDispatch();
     const history = useHistory();
     
     const onGroupNameChange: ChangeEventHandler<HTMLInputElement> = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -61,15 +56,12 @@ const GroupList: React.FC = (props): JSX.Element => {
                 name: newGroupName
             }
         };
-        const accessToken = user.accessToken? user.accessToken : '';
 
         // Makes POST request to the '/api/group/' endpoint
         protectedRequest( 
             fetchDetails,
-            accessToken,
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
     };
 
@@ -99,12 +91,10 @@ const GroupList: React.FC = (props): JSX.Element => {
 
         getRequest(
             '/api/user/groups',
-            user.accessToken? user.accessToken : '',
             successHandler,
-            errorHandler,
-            dispatch
+            errorHandler
         );
-    }, [user.accessToken]);
+    }, []);
 
     return (
         <div id='group-list'>

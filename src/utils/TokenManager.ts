@@ -1,4 +1,3 @@
-import { Dispatch } from 'react';
 import { manageUser } from './actions/User.actions';
 import { FetchDetails, protectedRequest } from './fetch-requests';
 import { User } from './reducers/User.reducer';
@@ -85,11 +84,14 @@ export default class TokenManager {
 
     private registerRequest (requestToRegister: RegisteredRequest) {
         this.registeredRequests.push(requestToRegister);
+        console.log('Inside TokenManager registerRequest', this.registeredRequests);
     }
 
     public refreshToken () {
+        console.log('Inside TokenManager refreshToken, busyFetching?', this.busyFetching);
         const fetchDetails: FetchDetails = {
             fetchURI: '/api/auth/refresh-token/',
+            fetchingRefreshToken: true,
             method: 'POST'
         };
 
@@ -137,12 +139,17 @@ export default class TokenManager {
     }
 
     public getToken (): Promise<string> {
+        console.log('TokenManager getToken before Promise');
         return new Promise((resolve, reject) => {
+
+            console.log('TokenManager getToken inside Promise');
             if (this.token_) {
                 // Check if 50 minutes(near expiry time) have passed after receiving 
                 // the access-token from the server. If not then return the strored
                 // access-token
+                console.log('TokenManager if this.token_', this.token_);
                 if (!this.didTokenExpire()) {
+                    console.log('TokenManager token expired?', this.didTokenExpire());
                     return resolve(this.token_.token);
                 }
             }
