@@ -14,11 +14,16 @@ interface RegisteredRequest {
     reject: (err: Error) => any;
 }
 
+interface Token {
+    token: string;
+    receivedAt: number;
+}
+
 // Single-ton pattern for TokenManager so that 
 // only one instance is used throughout the application
 export default class TokenManager {
     private static TokenManager_: TokenManager;
-    private token_: string | null;
+    private token_: Token | null;
     private busyFetching: boolean = false;
     private registeredRequests: RegisteredRequest[] = [];
 
@@ -42,13 +47,31 @@ export default class TokenManager {
     }
 
     public saveToken (token: string) {
-        this.token_ = token;
+        this.token_ = {
+            token,
+            receivedAt: Date.now()/1000
+        };
         this.busyFetching = false;
         while (this.registeredRequests.length) {
             const { resolve } = this.registeredRequests.pop() as RegisteredRequest;
 
             resolve(token);
         }
+    }
+
+    // Check if the stored access token has passed 50 minutes
+    // If so, then return true
+    private didTokenExpire () {
+        // Convert 50 minutes to seconds
+        const TOKEN_EXPIRATION_INTERVAL = 50*60;
+
+        // The current time in seconds
+        const CURR_TIME = Date.now()/1000;
+        
+        if ((CURR_TIME - (this.token_ as Token).receivedAt) > TOKEN_EXPIRATION_INTERVAL) {
+            return true;
+        }
+        return false;
     }
 
     private rejectRequests (err: Error) {
@@ -115,11 +138,16 @@ export default class TokenManager {
 
     public getToken (): Promise<string> {
         return new Promise((resolve, reject) => {
-            if (this.token_) return resolve(this.token_);
-            
-            // TODO: Remember to add time-checker to check if one hour has passed
-            // TODO: as access-token will expire after an hour
+            if (this.token_) {
+                // Check if 50 minutes(near expiry time) have passed after receiving 
+                // the access-token from the server. If not then return the strored
+                // access-token
+                if (!this.didTokenExpire()) {
+                    return resolve(this.token_.token);
+                }
+            }
 
+            // Register this request
             this.registerRequest({ resolve, reject });
 
             // If the TokenManager is not already busy fetching the new access token
