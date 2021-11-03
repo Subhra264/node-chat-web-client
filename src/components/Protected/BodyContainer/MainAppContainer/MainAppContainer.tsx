@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import GroupList from '../GroupList/GroupList';
-import './ChatBodyContainer.scss';
+import './MainAppContainer.scss';
 import { useParams } from 'react-router';
 import io, { Socket } from 'socket.io-client';
 import { SocketContext } from '../../../../utils/contexts';
@@ -24,7 +24,7 @@ const ChatBodyContainer: React.FC = (props): JSX.Element => {
     // }, [channelId, groupId]);
     
     return (
-        <div id='chat-body-container' >
+        <div id='main-app-container' >
             <GroupList />
             <Route path='/:groupId/channels/:channelId'>
                 <SocketContext.Provider value={socketRef.current}>

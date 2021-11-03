@@ -4,7 +4,7 @@ import ProfileDetails from './ProfileDetails';
 
 const Profile: React.FC = (): JSX.Element => {
     return (
-        <div id='chat-body-container'>
+        <div className='body-container'>
             {/* TODO: provide a proper props for the GroupList component */}
             <FriendList />
             <Chat chatTarget={ChatTarget.SELF} />

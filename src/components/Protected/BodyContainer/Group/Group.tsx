@@ -10,9 +10,11 @@ const Group: React.FC = (props): JSX.Element => {
 
     return (
         <GroupContext.Provider value={{ groupId, channelId }}>
-            <ChannelList />
-            <Chat chatTarget={ChatTarget.GROUP} groupId={groupId} channelId={channelId} />
-            <GroupMemberList />
+            <div className="body-container">
+                <ChannelList />
+                <Chat chatTarget={ChatTarget.GROUP} groupId={groupId} channelId={channelId} />
+                <GroupMemberList />
+            </div>
         </GroupContext.Provider>
     );
 };
