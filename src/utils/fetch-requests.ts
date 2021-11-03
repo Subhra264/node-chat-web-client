@@ -67,7 +67,7 @@ export function getRequest (getURI: string, successHandler: Function, errorHandl
             successHandler(result.message);
         })
         .catch((err: Error) => {
-            throw err;
+            errorHandler(err);
         });
     })
     .catch((err: Error) => {
@@ -125,6 +125,7 @@ export function protectedRequest (fetchDetails: FetchDetails, successHandler: Fu
     // In this case we don't need to fetch the access-token
     if (fetchDetails.fetchingRefreshToken) {
         return fetchAPI(getFetchHeaders(), (err: Error) => {
+            console.log('Hello from fetch-requests.protected method fetchingRefreshToken catch block', err);
             errorHandler(err);
         });
     }
@@ -133,7 +134,7 @@ export function protectedRequest (fetchDetails: FetchDetails, successHandler: Fu
     TokenManager.manager.getToken().then(accessToken => {
 
         fetchAPI(getFetchHeaders(accessToken), (err: Error) => {
-            throw err;
+            errorHandler(err);
         });
     })
     .catch((err: Error) => {
