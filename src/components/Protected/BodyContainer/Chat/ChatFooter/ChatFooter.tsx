@@ -2,8 +2,8 @@ import { ChangeEvent, ChangeEventHandler, MouseEvent, MouseEventHandler, useStat
 import { Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 // import { SocketContext } from '../../../../utils/contexts';
-import { FetchDetails, protectedRequest } from '../../../../utils/fetch-requests';
-import { ChatSetMessages, Message } from '../Chat/Chat';
+import { FetchDetails, protectedRequest } from '../../../../../utils/fetch-requests';
+import { ChatSetMessages, Message } from '../Chat';
 import './ChatFooter.scss';
 
 export interface ChatFooterProps extends ChatSetMessages{

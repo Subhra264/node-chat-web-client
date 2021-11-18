@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getRequest } from '../../../../utils/fetch-requests';
-import SelfChatFooter from '../ChatFooter/SelfChatFooter';
+import SelfChatFooter from './ChatFooter/SelfChatFooter';
 import './Chat.scss';
 import ChatBody from './ChatBody/ChatBody';
 

@@ -1,4 +1,4 @@
-import { ChatSetMessages } from '../Chat/Chat';
+import { ChatSetMessages } from '../Chat';
 import ChatFooter from './ChatFooter';
 
 interface SelfChatFooterProps extends ChatSetMessages {}

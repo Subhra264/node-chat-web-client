@@ -13,7 +13,7 @@ interface MemberListProps {
     effectDeps: React.DependencyList;
 }
 
-const MemberList: React.FC<MemberListProps> = (props: MemberListProps): JSX.Element => {
+const MemberList: React.FC<MemberListProps> = (props): JSX.Element => {
     const [memberList, setMemberList] = useState<Member[]>([]);
 
     useEffect(() => {
@@ -38,6 +38,7 @@ const MemberList: React.FC<MemberListProps> = (props: MemberListProps): JSX.Elem
             <div id='invite-friends' className='item add-item'>
                 Invite friends
             </div>
+            { props.children }
             {
                 memberList.map((member: Member) => (
                     <div key={member._id} className='item'>
