@@ -6,10 +6,10 @@ interface ModalBoxProps {
     show: boolean;
     setShow: React.Dispatch<React.SetStateAction<boolean>>;
     form?: FormProps;
-    info?: string;
+    name?: string;
 }
 
-const ModalBox: React.FC<ModalBoxProps> = (props: ModalBoxProps): JSX.Element => {
+const ModalBox: React.FC<ModalBoxProps> = (props): JSX.Element => {
 
     const closeModal = () => {
         props.setShow(!props.show);
@@ -20,7 +20,7 @@ const ModalBox: React.FC<ModalBoxProps> = (props: ModalBoxProps): JSX.Element =>
             <div className='modal-box'>
                 <div className='modal-box-header'>
                     <div className='modal-box-name'>
-
+                        {props.name}
                     </div>
                     <div className='close-button' onClick={closeModal}>
                         &times;
@@ -32,7 +32,7 @@ const ModalBox: React.FC<ModalBoxProps> = (props: ModalBoxProps): JSX.Element =>
                         props.form? 
                             <Form {...props.form} />
                         :
-                            props.info
+                            props.children
                     }
                 </div>
             </div>

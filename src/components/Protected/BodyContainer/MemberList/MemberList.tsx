@@ -35,9 +35,6 @@ const MemberList: React.FC<MemberListProps> = (props): JSX.Element => {
 
     return (
         <div className='item-list'>
-            <div id='invite-friends' className='item add-item'>
-                Invite friends
-            </div>
             { props.children }
             {
                 memberList.map((member: Member) => (

@@ -8,14 +8,14 @@
     #group-list {
         height: 100%;
         flex-grow: 2;
-        min-width: 3rem;
-        max-width: 5rem;
+        min-width: 3em;
+        max-width: 5em;
 
         .group {
             @include centreIt();
-            width: 3rem;
-            margin: 0.5rem auto 0rem;
-            height: 3rem;
+            width: 3em;
+            margin: 0.5em auto 0em;
+            height: 3em;
             border-radius: 50%;
             @include boxShadow();
             color: $textColor;
@@ -30,25 +30,25 @@
         
         .item-list {
             height: 100%;
-            min-width: 14rem;
+            min-width: 14em;
             flex-grow: 6;
             background-color: #252121;
     
             .item {
-                margin: 1rem 0.7rem 0rem;
-                text-align: center;
+                margin: 1em 0.7em 0em;
                 @include boxShadow(5px, 10px, #20101f, #393939);
                 cursor: pointer;
     
                 a {
                     display: block;
-                    padding: 0.5rem;
+                    padding: 0.5em 0.9em;
                 }
     
             }
             
             .add-item {
-                padding: 0.5rem;
+                padding: 0.5em;
+                text-align: center;
             }
         }
     }

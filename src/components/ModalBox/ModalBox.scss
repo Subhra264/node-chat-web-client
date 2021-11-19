@@ -23,6 +23,8 @@
 
             .modal-box-name {
                 padding: 0.2em 0.4em;
+                font-size: 1.4em;
+                font-weight: bold;
             }
 
             .close-button {
@@ -41,6 +43,7 @@
 
         .modal-box-content {
             padding: 0.4em 0.5em;
+            word-wrap: break-word;
         }
     }
 
