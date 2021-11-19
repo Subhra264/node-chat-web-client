@@ -15,7 +15,8 @@ export interface Message {
     sender: {
         username: string;
         reference: string;
-    }
+    },
+    _id: string;
 }
 
 export interface ChatSetMessages {

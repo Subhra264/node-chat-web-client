@@ -39,9 +39,9 @@ const ChatBody: React.FC<ChatBodyProps> = (props): JSX.Element => {
                                 message.sender === undefined ||
                                 message.sender.reference === user.userId
                             )?
-                                <RightMessage {...message} />
+                                <RightMessage {...message} key={message._id} />
                             :
-                                <LeftMessage {...message} />
+                                <LeftMessage {...message} key={message._id} />
                         }
                     </>
                 ))
