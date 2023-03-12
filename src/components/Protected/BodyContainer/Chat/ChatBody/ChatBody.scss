@@ -1,41 +1,41 @@
 @import 'src/utils/styles.scss';
 
 .chat-body {
-    flex-grow: 40;
-    padding: 0.4rem;
-    border-bottom: solid 1px #393939;
-    overflow-y: auto;
+  flex-grow: 40;
+  padding: 0.4rem;
+  border-bottom: solid 1px #393939;
+  overflow-y: auto;
 
-    .left {
-        float: left;
-        clear: both;
-        width: fit-content;
-        max-width: 75%;
-        margin: 0.1rem 0;
-        outline: none;
-        background: #403d3d;
-        box-shadow: 4px 4px 8px #222222;
-        padding: 0.3rem;
+  .left {
+    float: left;
+    clear: both;
+    width: fit-content;
+    max-width: 75%;
+    margin: 0.1rem 0;
+    outline: none;
+    background: #403d3d;
+    box-shadow: 4px 4px 8px #222222;
+    padding: 0.3rem;
 
-        .left-content {
-            padding: 0.5rem;
-            background-color: #353131;
-            margin-top: 0.2rem;
-            border-radius: 6px;
-            width: 100%;
-            word-wrap: break-word;
-        }
+    .left-content {
+      padding: 0.5rem;
+      background-color: #353131;
+      margin-top: 0.2rem;
+      border-radius: 6px;
+      width: 100%;
+      word-wrap: break-word;
     }
+  }
 
-    .right {
-        float: right;
-        clear: both;
-        width: fit-content;
-        max-width: 75%;
-        padding: 0.5rem;
-        background: #352323;
-        margin: 0.3rem 0;
-        word-wrap: break-word;
-        box-shadow: 4px 4px 8px #151515, -4px -4px 8px #37382c;
-    }
+  .right {
+    float: right;
+    clear: both;
+    width: fit-content;
+    max-width: 75%;
+    padding: 0.5rem;
+    background: #352323;
+    margin: 0.3rem 0;
+    word-wrap: break-word;
+    box-shadow: 4px 4px 8px #151515, -4px -4px 8px #37382c;
+  }
 }

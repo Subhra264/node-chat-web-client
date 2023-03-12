@@ -5,86 +5,79 @@ import './Chat.scss';
 import ChatBody from './ChatBody/ChatBody';
 
 export enum ChatTarget {
-    GROUP = 'GROUP',
-    FRIEND = 'FRIEND',
-    SELF = 'SELF'
+  GROUP = 'GROUP',
+  FRIEND = 'FRIEND',
+  SELF = 'SELF',
 }
 
 export interface Message {
-    message: string;
-    sender: {
-        username: string;
-        reference: string;
-    },
-    _id: string;
+  message: string;
+  sender: {
+    username: string;
+    reference: string;
+  };
+  _id: string;
 }
 
 export interface ChatSetMessages {
-    setMessages: React.Dispatch<React.SetStateAction<[Message] | []>>;
+  setMessages: React.Dispatch<React.SetStateAction<[Message] | []>>;
 }
 
 interface ChatProps {
-    chatTarget: ChatTarget;
+  chatTarget: ChatTarget;
 }
 
-interface SelfChatProps extends ChatProps{
-    chatTarget: ChatTarget.SELF;
+interface SelfChatProps extends ChatProps {
+  chatTarget: ChatTarget.SELF;
 }
 
-interface GroupChatProps extends ChatProps{
-    chatTarget: ChatTarget.GROUP;
-    groupId: string;
-    channelId: string;
+interface GroupChatProps extends ChatProps {
+  chatTarget: ChatTarget.GROUP;
+  groupId: string;
+  channelId: string;
 }
 
 const Chat: React.FC<GroupChatProps | SelfChatProps> = (props): JSX.Element => {
-    const [messages, setMessages] = useState<[Message] | []>([]);
-    
-    useEffect(() => {
-        const successHandler = (result: [Message]) => {
-            setMessages(result);
-        };
-    
-        const errorHandler = (err: Error) => {
-            console.log('Error fetching messages', err.message);
-        };
+  const [messages, setMessages] = useState<[Message] | []>([]);
 
-        let fetchURI = '';
-        if (props.chatTarget === ChatTarget.SELF) {
-            fetchURI = '/api/profile/messages';
-        } else if (props.chatTarget === ChatTarget.GROUP) {
-            const { groupId, channelId } = props as GroupChatProps;
-            fetchURI = `/api/group/text-channel/messages/${groupId}/${channelId}`;
-        } else {
-            // TODO: define fetchURI for ChatTarget.FRIEND
-        }
+  useEffect(() => {
+    const successHandler = (result: [Message]) => {
+      setMessages(result);
+    };
 
-        // Makes GET request to get the messages
-        getRequest(
-            fetchURI,
-            successHandler,
-            errorHandler
-        );
-    }, []);
+    const errorHandler = (err: Error) => {
+      console.log('Error fetching messages', err.message);
+    };
 
-    return (
-        <div className='chat-box'>
-            <div className='chat-header'>
-                {/* {props.channel.name} */}
-            </div>
+    let fetchURI = '';
+    if (props.chatTarget === ChatTarget.SELF) {
+      fetchURI = '/api/profile/messages';
+    } else if (props.chatTarget === ChatTarget.GROUP) {
+      const { groupId, channelId } = props as GroupChatProps;
+      fetchURI = `/api/group/text-channel/messages/${groupId}/${channelId}`;
+    } else {
+      // TODO: define fetchURI for ChatTarget.FRIEND
+    }
 
-            {
-                props.chatTarget === ChatTarget.SELF?
-                    <>
-                        <ChatBody messages={messages}/>
-                        <SelfChatFooter setMessages={setMessages} />
-                    </>
-                :
-                    ''
-            }
-            
-            {/* */}
-            {/* <div className='right'>
+    // Makes GET request to get the messages
+    getRequest(fetchURI, successHandler, errorHandler);
+  }, []);
+
+  return (
+    <div className="chat-box">
+      <div className="chat-header">{/* {props.channel.name} */}</div>
+
+      {props.chatTarget === ChatTarget.SELF ? (
+        <>
+          <ChatBody messages={messages} />
+          <SelfChatFooter setMessages={setMessages} />
+        </>
+      ) : (
+        ''
+      )}
+
+      {/* */}
+      {/* <div className='right'>
                 Hello testing, I am Bob...
             </div>
             <div className='left'>
@@ -93,8 +86,8 @@ const Chat: React.FC<GroupChatProps | SelfChatProps> = (props): JSX.Element => {
                     Hello testing, I am Alex...
                 </div>
             </div> */}
-        </div>
-    );
+    </div>
+  );
 };
 
 export default Chat;

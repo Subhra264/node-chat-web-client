@@ -1,18 +1,28 @@
 @mixin centreIt($flexDirection: row) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: $flexDirection;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $flexDirection;
 }
 
-@mixin boxShadow($blur: 5px, $distance: 10px, $shadowColor: #201f1f, $lightColor: #3c3b3b) {
-    box-shadow: $blur $blur $distance $shadowColor,
-                (-$blur) (-$blur) $distance $lightColor;
+@mixin boxShadow(
+  $blur: 5px,
+  $distance: 10px,
+  $shadowColor: #201f1f,
+  $lightColor: #3c3b3b
+) {
+  box-shadow: $blur $blur $distance $shadowColor,
+    (-$blur) (-$blur) $distance $lightColor;
 }
 
-@mixin insetBoxShadow($blur: 5px, $distance: 10px, $shadowColor: #201f1f, $lightColor: #3c3b3b) {
-    box-shadow: inset $blur $blur $distance $shadowColor,
-                inset (-$blur) (-$blur) $distance $lightColor;
+@mixin insetBoxShadow(
+  $blur: 5px,
+  $distance: 10px,
+  $shadowColor: #201f1f,
+  $lightColor: #3c3b3b
+) {
+  box-shadow: inset $blur $blur $distance $shadowColor,
+    inset (-$blur) (-$blur) $distance $lightColor;
 }
 
 $backgroundColor: #2e2d2d;

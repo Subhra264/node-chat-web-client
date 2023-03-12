@@ -4,37 +4,36 @@ import useUserSelector from '../../hooks/useUserSelector';
 import MainAppContainer from './BodyContainer/MainAppContainer/MainAppContainer';
 
 const Protected: React.FC = () => {
-    const isAuthenticated = useUserSelector();
-    console.log('Protected component isAuthenticated?', isAuthenticated);
-    const location = useLocation();
+  const isAuthenticated = useUserSelector();
+  console.log('Protected component isAuthenticated?', isAuthenticated);
+  const location = useLocation();
 
-    let routes: JSX.Element[];
-    if (!isAuthenticated) {
-        routes = [
-            <Route key='redirect'>
-                <Redirect 
-                    to={{
-                        pathname: '/log-in',
-                        state: {
-                            redirectTo: location.pathname
-                        }
-                    }} 
-                />
-            </Route>
-        ];
-    } else {
-        routes = [
-            <Route path={['/:groupId/channels/:channelId', '/profile/@me']} key='chat-body'>
-                <MainAppContainer />
-            </Route>
-        ];
-    }
+  let routes: JSX.Element[];
+  if (!isAuthenticated) {
+    routes = [
+      <Route key="redirect">
+        <Redirect
+          to={{
+            pathname: '/log-in',
+            state: {
+              redirectTo: location.pathname,
+            },
+          }}
+        />
+      </Route>,
+    ];
+  } else {
+    routes = [
+      <Route
+        path={['/:groupId/channels/:channelId', '/profile/@me']}
+        key="chat-body"
+      >
+        <MainAppContainer />
+      </Route>,
+    ];
+  }
 
-    return (
-        <Switch>
-            {routes.map(route => route)}
-        </Switch>
-    );
+  return <Switch>{routes.map((route) => route)}</Switch>;
 };
 
 export default Protected;

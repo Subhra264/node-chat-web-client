@@ -3,44 +3,44 @@
 $padding: 0.4rem;
 
 .chat-footer {
-    flex-grow: 4;
-    padding: 0.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  flex-grow: 4;
+  padding: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    .editor-container {
-        height: 100%;
-        width: 85%;
-        // flex-grow: 5;
-    }
-    
-    #editor {
-        height: 100%;
-        width: 100%;
-        border-radius: 4px;
-        padding: $padding;
-        display: block;
-        line-height: 20px;
-        border: none;
-        background-color: $backgroundColor;
-        @include boxShadow(4px, 5px);
-        margin-right: 0.8rem;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        outline: none;
-        resize: none;
-    }
+  .editor-container {
+    height: 100%;
+    width: 85%;
+    // flex-grow: 5;
+  }
 
-    .send {
-        button {
-            display: block;
-            background-color: $backgroundColor;
-            @include boxShadow();
-            padding: $padding;
-            color: $textColor;
-            border: none;
-            outline: none;
-            cursor: pointer;
-        }
+  #editor {
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    padding: $padding;
+    display: block;
+    line-height: 20px;
+    border: none;
+    background-color: $backgroundColor;
+    @include boxShadow(4px, 5px);
+    margin-right: 0.8rem;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    outline: none;
+    resize: none;
+  }
+
+  .send {
+    button {
+      display: block;
+      background-color: $backgroundColor;
+      @include boxShadow();
+      padding: $padding;
+      color: $textColor;
+      border: none;
+      outline: none;
+      cursor: pointer;
     }
+  }
 }

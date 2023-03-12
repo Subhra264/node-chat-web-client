@@ -14,26 +14,26 @@ function App() {
 
   useEffect(() => {
     if (sessionStorage.getItem(SSK_USER)) {
-      dispatch(manageUser(JSON.parse(sessionStorage.getItem(SSK_USER) as string)));
+      dispatch(
+        manageUser(JSON.parse(sessionStorage.getItem(SSK_USER) as string)),
+      );
     }
   }, []);
 
   return (
     <div className="App">
       <Switch>
-        <Route path='/' exact>
-          
-        </Route>  
-        <Route path='/log-in' exact>
+        <Route path="/" exact></Route>
+        <Route path="/log-in" exact>
           <LogIn />
         </Route>
-        <Route path='/sign-up' exact>
+        <Route path="/sign-up" exact>
           <SignUp />
         </Route>
-        <Route path='/not-found' exact>
+        <Route path="/not-found" exact>
           <NotFound />
         </Route>
-        <Route >
+        <Route>
           <Protected />
         </Route>
       </Switch>

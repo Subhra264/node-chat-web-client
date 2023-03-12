@@ -1,42 +1,42 @@
 @import 'src/utils/styles';
 
 .form {
+  @include centreIt(column);
+  padding: 0.6rem;
+
+  > form {
     @include centreIt(column);
-    padding: 0.6rem;
-    
-    >form {
-        @include centreIt(column);
-        
-        >input {
-            display: inline;
-            // width: 100%;
-            width: 22rem;
-            // max-width: 25rem;
-            font-size: 1rem;
-            padding: 0.7rem;
-            outline: none;
-            border: none;
-            margin: 0.5rem;
-            border-radius: 0px;
-            background: $backgroundColor;
-            @include insetBoxShadow(2px, 5px);
-        }
+
+    > input {
+      display: inline;
+      // width: 100%;
+      width: 22rem;
+      // max-width: 25rem;
+      font-size: 1rem;
+      padding: 0.7rem;
+      outline: none;
+      border: none;
+      margin: 0.5rem;
+      border-radius: 0px;
+      background: $backgroundColor;
+      @include insetBoxShadow(2px, 5px);
     }
+  }
 }
 
 #submit-button {
-    cursor: pointer;
-    @include boxShadow();
+  cursor: pointer;
+  @include boxShadow();
 }
 
 .form-container {
-    @include centreIt(column);
-    width: 70%;
-    height: 100%;
-    margin: auto;
+  @include centreIt(column);
+  width: 70%;
+  height: 100%;
+  margin: auto;
 
-    .form-title {
-        font-weight: bold;
-        font-size: 1.6rem;
-    }
+  .form-title {
+    font-weight: bold;
+    font-size: 1.6rem;
+  }
 }

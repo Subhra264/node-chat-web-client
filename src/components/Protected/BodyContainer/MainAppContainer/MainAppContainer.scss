@@ -1,55 +1,54 @@
 @import 'src/utils/styles';
 
 #main-app-container {
-    display: grid;
-    grid-template-columns: 4em 1fr;
+  display: grid;
+  grid-template-columns: 4em 1fr;
+  height: 100%;
+
+  #group-list {
     height: 100%;
+    flex-grow: 2;
+    min-width: 3em;
+    max-width: 5em;
 
-    #group-list {
-        height: 100%;
-        flex-grow: 2;
-        min-width: 3em;
-        max-width: 5em;
-
-        .group {
-            @include centreIt();
-            width: 3em;
-            margin: 0.5em auto 0em;
-            height: 3em;
-            border-radius: 50%;
-            @include boxShadow();
-            color: $textColor;
-            cursor: pointer;
-        }
+    .group {
+      @include centreIt();
+      width: 3em;
+      margin: 0.5em auto 0em;
+      height: 3em;
+      border-radius: 50%;
+      @include boxShadow();
+      color: $textColor;
+      cursor: pointer;
     }
+  }
 
-    .body-container {
-        display: flex;
-        align-items: stretch;
-        flex-grow: 1;
-        
-        .item-list {
-            height: 100%;
-            min-width: 14em;
-            flex-grow: 6;
-            background-color: #252121;
-    
-            .item {
-                margin: 1em 0.7em 0em;
-                @include boxShadow(5px, 10px, #20101f, #393939);
-                cursor: pointer;
-    
-                a {
-                    display: block;
-                    padding: 0.5em 0.9em;
-                }
-    
-            }
-            
-            .add-item {
-                padding: 0.5em;
-                text-align: center;
-            }
+  .body-container {
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+
+    .item-list {
+      height: 100%;
+      min-width: 14em;
+      flex-grow: 6;
+      background-color: #252121;
+
+      .item {
+        margin: 1em 0.7em 0em;
+        @include boxShadow(5px, 10px, #20101f, #393939);
+        cursor: pointer;
+
+        a {
+          display: block;
+          padding: 0.5em 0.9em;
         }
+      }
+
+      .add-item {
+        padding: 0.5em;
+        text-align: center;
+      }
     }
+  }
 }
